@@ -2,6 +2,8 @@
 
 A simple cli app to list projects and open them in a new window of VS Code.
 
+This app uses [Bubble Tea](https://github.com/charmbracelet/bubbletea/) as its UI framework.
+
 ## Configuration
 You will need to create a new directory at `~/.config/go-apps/` and copy the file `.projects.json` provided in this repository.
 To add your first project, just edit the json provided and launch the CLI.

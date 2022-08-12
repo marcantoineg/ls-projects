@@ -12,13 +12,20 @@ type Project struct {
 	Path string `json:"path"`
 }
 
+// ValidatePath returns a boolean value equal to wether or not the path exists on the host.
+func (p Project) ValidatePath() bool {
+	return exists(replaceTilde(p.Path))
+}
+
+// implements interface list.Item for type Project
 func (p Project) FilterValue() string {
 	return p.Name
 }
 
 const projectsFilePath = "~/.config/go-apps/.projects.json"
 
-// GetProjects fetch the projects from the disk and returns it.
+// GetProjects fetch the projects from the disk and returns them.
+// If an error happens throughout the process, returns the error as the second return value.
 func GetProjects() ([]Project, error) {
 	file, err := os.Open(replaceTilde(projectsFilePath))
 	if err != nil {
