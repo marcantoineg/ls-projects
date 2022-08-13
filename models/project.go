@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+const (
+	projectsFilePath = "~/.config/go-apps"
+	projectsFileName = ".projects.json"
+)
+
 type Project struct {
 	Name string `json:"name"`
 	Path string `json:"path"`
@@ -22,19 +27,34 @@ func (p Project) FilterValue() string {
 	return p.Name
 }
 
-const projectsFilePath = "~/.config/go-apps/.projects.json"
+// getProjectsFilePath returns an absolute path to the projects file directory.
+func getProjectsFilePath() string {
+	return replaceTilde(projectsFilePath)
+}
 
-// GetProjects fetch the projects from the disk and returns them.
+// getFullProjectsFilePath returns an absolute path to the projects file.
+func getFullProjectsFilePath() string {
+	return getProjectsFilePath() + "/" + projectsFileName
+}
+
+// GetProjects fetches the projects from the disk and returns them.
 // If an error happens throughout the process, returns the error as the second return value.
 func GetProjects() ([]Project, error) {
-	file, err := os.Open(replaceTilde(projectsFilePath))
+	if exists := exists(getFullProjectsFilePath()); !exists {
+		err := createEmptyProjectsFile()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	file, err := os.Open(replaceTilde(getFullProjectsFilePath()))
 	if err != nil {
-		return []Project{}, err
+		return nil, err
 	}
 
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		return []Project{}, err
+		return nil, err
 	}
 	file.Close()
 
@@ -56,7 +76,52 @@ func GetProjects() ([]Project, error) {
 	return projects, err
 }
 
-//  replaceTilde returns a string with the tilde character replaced by the user's home directory
+// SaveProject fetches the projects from the disk, appends the project given as the parameter then save the new projects on the disk.
+// If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
+func SaveProject(project Project) ([]Project, error) {
+	projects, err := GetProjects()
+	if err != nil {
+		return nil, err
+	}
+
+	projects = append(projects, project)
+
+	v, err := json.MarshalIndent(projects, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	err = ioutil.WriteFile(getFullProjectsFilePath(), v, os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+
+	return projects, nil
+}
+
+// createEmptyProjectsFile creates the required file to load and add new projects.
+func createEmptyProjectsFile() error {
+	err := os.MkdirAll(getProjectsFilePath(), os.ModePerm)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	file, err := os.Create(getFullProjectsFilePath())
+	if err != nil {
+		return err
+	}
+
+	_, err = file.WriteString("[]")
+	if err != nil {
+		return err
+	}
+
+	file.Close()
+	return nil
+}
+
+// replaceTilde returns a string with the tilde character replaced by the user's home directory
 func replaceTilde(filePath string) string {
 	var newString = filePath
 	if filePath[0] == '~' {
@@ -72,6 +137,7 @@ func replaceTilde(filePath string) string {
 
 // exists returns true if the directory/file exists. Returns false if any error araise when fetching the directory/file info.
 func exists(path string) bool {
+	path = replaceTilde(path)
 	_, err := os.Stat(path)
 	return err == nil
 }
