@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -86,12 +87,34 @@ func SaveProject(project Project) ([]Project, error) {
 
 	projects = append(projects, project)
 
-	v, err := json.MarshalIndent(projects, "", "  ")
+	err = saveToFile(projects)
 	if err != nil {
 		return nil, err
 	}
 
-	err = ioutil.WriteFile(getFullProjectsFilePath(), v, os.ModePerm)
+	return projects, nil
+}
+
+// DeleteProject fetches the projects from the disk by index, checks it's the same as the in-memory project, then deletes it from the disk.
+// If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
+func DeleteProject(index int, project Project) ([]Project, error) {
+	projects, err := GetProjects()
+	if err != nil {
+		return nil, err
+	}
+
+	if index >= len(projects) {
+		return nil, errors.New("project not found")
+	}
+
+	onDiskProject := projects[i]
+	if onDiskProject.Name != project.Name || onDiskProject.Path != project.Path {
+		return nil, errors.New("project on disk did not match project in memory")
+	}
+
+	projects = append(projects[:index], projects[index+1:]...)
+
+	err = saveToFile(projects)
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +141,18 @@ func createEmptyProjectsFile() error {
 
 	file.Close()
 	return nil
+}
+
+func saveToFile(projects []Project) error {
+	v, err := json.MarshalIndent(projects, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(getFullProjectsFilePath(), v, os.ModePerm)
+	if err != nil {
+		return err
+	}
 }
 
 // replaceTilde returns a string with the tilde character replaced by the user's home directory
