@@ -28,7 +28,6 @@ var (
 type projectFormModel struct {
 	focusIndex        int
 	inputs            []textinput.Model
-	createdProject    *models.Project
 	listSelectorModel *listSelectorModel
 }
 
@@ -90,13 +89,13 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				}
 
-				m.createdProject = &models.Project{
+				p := &models.Project{
 					Name: m.inputs[0].Value(),
 					Path: m.inputs[1].Value(),
 				}
 
-				if valid := m.createdProject.ValidatePath(); valid {
-					return m.listSelectorModel.Update(projectCreatedMsg{*m.createdProject})
+				if valid := p.ValidatePath(); valid {
+					return m.listSelectorModel.Update(projectCreatedMsg{*p})
 				} else {
 					return m.listSelectorModel.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
 				}
@@ -153,7 +152,8 @@ func (m *projectFormModel) updateInputs(msg tea.Msg) tea.Cmd {
 
 func (m projectFormModel) View() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("\n%s\n\n", formTitleStyle.Render("Add new project")))
+
+	fmt.Fprintf(&b, "\n%s\n\n", formTitleStyle.Render("Add new project"))
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())

@@ -47,7 +47,7 @@ func GetProjects() ([]Project, error) {
 		}
 	}
 
-	file, err := os.Open(replaceTilde(getFullProjectsFilePath()))
+	file, err := os.Open(getFullProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,6 @@ func SaveProject(project Project) ([]Project, error) {
 func createEmptyProjectsFile() error {
 	err := os.MkdirAll(getProjectsFilePath(), os.ModePerm)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 

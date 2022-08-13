@@ -127,18 +127,16 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.projectForm = nil
 
 	case noProjectCreatedMsg:
-		m.projectForm = nil
-
 		m.list.Styles.Title = titleStyle
 		m.list.Title = initialTitle
 
-	case projectCreationErrorMsg:
 		m.projectForm = nil
 
+	case projectCreationErrorMsg:
 		m.list.Styles.Title = errorTitleStyle
 		m.list.Title = msg.Error()
 
-		return m, nil
+		m.projectForm = nil
 
 	// Keybinding
 	case tea.KeyMsg:
