@@ -2,14 +2,17 @@ package models
 
 import (
 	"encoding/json"
+	"errors"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 )
 
 const (
-	projectsFilePath = "~/.config/list-my-projects"
-	projectsFileName = ".projects.json"
+	projectsFilePath     = "~/.config/list-my-projects"
+	projectsFileName     = ".projects.json"
+	testProjectsFilePath = "./test.projects.json"
 )
 
 type Project struct {
@@ -34,7 +37,11 @@ func getProjectsFilePath() string {
 
 // getFullProjectsFilePath returns an absolute path to the projects file.
 func getFullProjectsFilePath() string {
-	return getProjectsFilePath() + "/" + projectsFileName
+	if flag.Lookup("test.v") == nil {
+		return getProjectsFilePath() + "/" + projectsFileName
+	} else {
+		return testProjectsFilePath
+	}
 }
 
 // GetProjects fetches the projects from the disk and returns them.
@@ -61,16 +68,19 @@ func GetProjects() ([]Project, error) {
 	var projects []Project
 	err = json.Unmarshal(bytes, &projects)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, err
 	}
 
 	for i := range projects {
+		var project = projects[i]
+		if project.Name == "" || project.Path == "" {
+			return nil, errors.New("both Name and Path fields are required.")
+		}
+
 		projects[i].Path = replaceTilde(projects[i].Path)
 		exists := exists(projects[i].Path)
 		if !exists {
-			fmt.Println(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
-			os.Exit(1)
+			return nil, errors.New(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
 		}
 	}
 	return projects, err
@@ -86,12 +96,7 @@ func SaveProject(project Project) ([]Project, error) {
 
 	projects = append(projects, project)
 
-	v, err := json.MarshalIndent(projects, "", "  ")
-	if err != nil {
-		return nil, err
-	}
-
-	err = ioutil.WriteFile(getFullProjectsFilePath(), v, os.ModePerm)
+	err = saveToFile(projects)
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +123,16 @@ func createEmptyProjectsFile() error {
 
 	file.Close()
 	return nil
+}
+
+func saveToFile(projects []Project) error {
+	v, err := json.MarshalIndent(projects, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(getFullProjectsFilePath(), v, os.ModePerm)
+	return err
 }
 
 // replaceTilde returns a string with the tilde character replaced by the user's home directory
