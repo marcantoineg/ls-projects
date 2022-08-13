@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	projectsFilePath = "~/.config/go-apps"
+	projectsFilePath = "~/.config/list-my-projects"
 	projectsFileName = ".projects.json"
 )
 
