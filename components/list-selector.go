@@ -47,7 +47,7 @@ var (
 			PaddingBottom(1)
 
 	quitTextStyle = lipgloss.NewStyle().
-			Margin(1, 0, 2, 4)
+			Margin(1, 2)
 
 	pathTextStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("170"))

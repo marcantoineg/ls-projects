@@ -12,11 +12,14 @@ import (
 )
 
 var (
+	formTitleStyle      = titleStyle.Copy().MarginLeft(0)
 	focusedStyle        = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
 	blurredStyle        = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	cursorStyle         = focusedStyle.Copy()
 	noStyle             = lipgloss.NewStyle()
 	cursorModeHelpStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
+	formHelpStyle       = blurredStyle.Copy().Italic(true).Faint(true)
+	marginStyle         = lipgloss.NewStyle().MarginLeft(4)
 
 	focusedButton = focusedStyle.Copy().Render("[ Submit ]")
 	blurredButton = fmt.Sprintf("[ %s ]", blurredStyle.Render("Submit"))
@@ -39,17 +42,17 @@ func NewProjectForm(listSelectorModel *listSelectorModel) projectFormModel {
 	for i := range m.inputs {
 		t = textinput.New()
 		t.CursorStyle = cursorStyle
-		t.CharLimit = 32
+		t.CharLimit = 64
 
 		switch i {
 		case 0:
-			t.Placeholder = "Name"
+			t.Placeholder = "Name [*]"
 			t.Focus()
 			t.PromptStyle = focusedStyle
 			t.TextStyle = focusedStyle
 			t.Validate = validateTextField
 		case 1:
-			t.Placeholder = "Path"
+			t.Placeholder = "Path [*]"
 			t.Validate = validateTextField
 		}
 
@@ -150,6 +153,7 @@ func (m *projectFormModel) updateInputs(msg tea.Msg) tea.Cmd {
 
 func (m projectFormModel) View() string {
 	var b strings.Builder
+	b.WriteString(fmt.Sprintf("\n%s\n\n", formTitleStyle.Render("Add new project")))
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())
@@ -164,7 +168,9 @@ func (m projectFormModel) View() string {
 	}
 	fmt.Fprintf(&b, "\n\n%s\n\n", *button)
 
-	return b.String()
+	fmt.Fprintf(&b, "\n%s", formHelpStyle.Render("[*] marks required fields"))
+
+	return marginStyle.Render(b.String())
 }
 
 func validateTextField(v string) error {
