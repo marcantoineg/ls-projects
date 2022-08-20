@@ -2,7 +2,8 @@ package tests
 
 import (
 	"io/ioutil"
-	"list-my-projects/models"
+	models "list-my-projects/models"
+
 	"os"
 	"testing"
 
