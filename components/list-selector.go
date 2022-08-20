@@ -2,9 +2,9 @@ package components
 
 import (
 	"fmt"
-	"list-my-projects/models"
-	"os"
 	"os/exec"
+
+	models "list-my-projects/models/project"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -97,8 +97,7 @@ type initMsg struct{ items []list.Item }
 func (m listSelectorModel) Init() tea.Cmd {
 	projects, err := models.GetProjects()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	castedItems := make([]list.Item, len(projects))
