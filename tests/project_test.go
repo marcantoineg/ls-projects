@@ -305,7 +305,7 @@ func TestDeleteProject(t *testing.T) {
 				}
 			]
 			`,
-			index:   3,
+			index:   2,
 			project: models.Project{Name: "example-project-2", Path: "./"},
 
 			expectedProjects: nil,

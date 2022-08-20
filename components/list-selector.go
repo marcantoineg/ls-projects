@@ -150,9 +150,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	// Keybinding
 	case tea.KeyMsg:
-		model, tempCmd := handleKeyMsg(&m, msg)
-
-		return model, tempCmd
+		return handleKeyMsg(&m, msg)
 	}
 
 	m.list, cmd = m.list.Update(msg)
@@ -182,6 +180,7 @@ func (m listSelectorModel) View() string {
 	return "\n" + m.list.View()
 }
 
+// handleKeyMsg handles the keybinding part of the Update function.
 func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
 	case "ctrl+c", "q", "esc":
@@ -225,6 +224,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
+// castToListItem takes a list of 'Project's and returns it as a casted list of tea's interface 'list.Item'.
 func castToListItem(projects []models.Project) []list.Item {
 	castedItems := make([]list.Item, len(projects))
 	for i, p := range projects {
