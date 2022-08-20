@@ -121,11 +121,7 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 		return nil, errors.New("project on disk did not match project in memory")
 	}
 
-	if index+1 >= len(projects) {
-		projects = projects[:index]
-	} else {
-		projects = append(projects[:index], projects[index+1:]...)
-	}
+	projects = append(projects[:index], projects[index+1:]...)
 
 	err = saveToFile(projects)
 	if err != nil {

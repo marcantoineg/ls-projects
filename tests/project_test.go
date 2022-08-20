@@ -275,14 +275,19 @@ func TestDeleteProject(t *testing.T) {
 				{
 					"name": "example-project-2",
 					"path": "./"
+				},
+				{
+					"name": "example-project-3",
+					"path": "./"
 				}
 			]
 			`,
-			index:   1,
-			project: models.Project{Name: "example-project-2", Path: "./"},
+			index:   2,
+			project: models.Project{Name: "example-project-3", Path: "./"},
 
 			expectedProjects: []models.Project{
 				{Name: "example-project-1", Path: "./"},
+				{Name: "example-project-2", Path: "./"},
 			},
 			expectErr: false,
 		},
