@@ -26,20 +26,22 @@ func TestMain(m *testing.M) {
 }
 func TestGetProjects(t *testing.T) {
 	testRuns := []struct {
-		testName     string
-		onDiskData   string
+		testName        string
+		initialDiskData string
+
 		expectedData []models.Project
 		expectErr    bool
 	}{
 		{
-			testName:     "empty list",
-			onDiskData:   "[]",
+			testName:        "empty list",
+			initialDiskData: "[]",
+
 			expectedData: []models.Project{},
 			expectErr:    false,
 		},
 		{
 			testName: "single valid project",
-			onDiskData: `
+			initialDiskData: `
 			[
 				{
 					"name": "example-project",
@@ -47,6 +49,7 @@ func TestGetProjects(t *testing.T) {
 				}
 			]
 			`,
+
 			expectedData: []models.Project{
 				{Name: "example-project", Path: "./"},
 			},
@@ -54,7 +57,7 @@ func TestGetProjects(t *testing.T) {
 		},
 		{
 			testName: "multiple valid projects",
-			onDiskData: `
+			initialDiskData: `
 			[
 				{
 					"name": "example-project-1",
@@ -66,6 +69,7 @@ func TestGetProjects(t *testing.T) {
 				}
 			]
 			`,
+
 			expectedData: []models.Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
@@ -74,7 +78,7 @@ func TestGetProjects(t *testing.T) {
 		},
 		{
 			testName: "single project with invalid path",
-			onDiskData: `
+			initialDiskData: `
 			[
 				{
 					"name": "example-project",
@@ -82,12 +86,13 @@ func TestGetProjects(t *testing.T) {
 				}
 			]
 			`,
+
 			expectedData: nil,
 			expectErr:    true,
 		},
 		{
 			testName: "invalid object",
-			onDiskData: `
+			initialDiskData: `
 			[
 				{
 					"not-name": true,
@@ -95,17 +100,19 @@ func TestGetProjects(t *testing.T) {
 				}
 			]
 			`,
+
 			expectedData: nil,
 			expectErr:    true,
 		},
 		{
 			testName: "empty object",
-			onDiskData: `
+			initialDiskData: `
 			[
 				{
 				}
 			]
 			`,
+
 			expectedData: nil,
 			expectErr:    true,
 		},
@@ -113,7 +120,7 @@ func TestGetProjects(t *testing.T) {
 
 	for _, testRun := range testRuns {
 		t.Run(testRun.testName, func(t *testing.T) {
-			saveStringToFile(testRun.onDiskData)
+			saveStringToFile(testRun.initialDiskData)
 
 			p, err := models.GetProjects()
 
@@ -129,9 +136,10 @@ func TestGetProjects(t *testing.T) {
 
 func TestSaveProject(t *testing.T) {
 	testRuns := []struct {
-		testName         string
-		initialDiskData  string
-		project          models.Project
+		testName        string
+		initialDiskData string
+		project         models.Project
+
 		expectedProjects []models.Project
 		expectErr        bool
 	}{
@@ -197,6 +205,139 @@ func TestSaveProject(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
 			p, err := models.SaveProject(testRun.project)
+
+			assert.Equal(t, testRun.expectedProjects, p)
+			if testRun.expectErr {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
+}
+
+func TestDeleteProject(t *testing.T) {
+	testRuns := []struct {
+		testName        string
+		initialDiskData string
+		index           int
+		project         models.Project
+
+		expectedProjects []models.Project
+		expectErr        bool
+	}{
+		{
+			testName: "delete valid project with single project on disk",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				}
+			]
+			`,
+			index:   0,
+			project: models.Project{Name: "example-project-1", Path: "./"},
+
+			expectedProjects: []models.Project{},
+			expectErr:        false,
+		},
+		{
+			testName: "delete first project with mutliple project on disk",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			index:   0,
+			project: models.Project{Name: "example-project-1", Path: "./"},
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-2", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName: "delete last project with mutliple project on disk",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				},
+				{
+					"name": "example-project-3",
+					"path": "./"
+				}
+			]
+			`,
+			index:   2,
+			project: models.Project{Name: "example-project-3", Path: "./"},
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-1", Path: "./"},
+				{Name: "example-project-2", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName: "delete out of bound index",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			index:   2,
+			project: models.Project{Name: "example-project-2", Path: "./"},
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "delete invalid project",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			index:   0,
+			project: models.Project{Name: "example-project-2", Path: "./"},
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+	}
+
+	for _, testRun := range testRuns {
+		t.Run(testRun.testName, func(t *testing.T) {
+			saveStringToFile(testRun.initialDiskData)
+
+			p, err := models.DeleteProject(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {

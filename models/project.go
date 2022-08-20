@@ -104,6 +104,33 @@ func SaveProject(project Project) ([]Project, error) {
 	return projects, nil
 }
 
+// DeleteProject fetches the projects from the disk by index, checks it's the same as the in-memory project, then deletes it from the disk.
+// If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
+func DeleteProject(index int, project Project) ([]Project, error) {
+	projects, err := GetProjects()
+	if err != nil {
+		return nil, err
+	}
+
+	if index >= len(projects) {
+		return nil, errors.New("project not found")
+	}
+
+	onDiskProject := projects[index]
+	if onDiskProject.Name != project.Name || onDiskProject.Path != project.Path {
+		return nil, errors.New("project on disk did not match project in memory")
+	}
+
+	projects = append(projects[:index], projects[index+1:]...)
+
+	err = saveToFile(projects)
+	if err != nil {
+		return nil, err
+	}
+
+	return projects, nil
+}
+
 // createEmptyProjectsFile creates the required file to load and add new projects.
 func createEmptyProjectsFile() error {
 	err := os.MkdirAll(getProjectsFilePath(), os.ModePerm)
