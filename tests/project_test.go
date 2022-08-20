@@ -92,6 +92,22 @@ func TestGetProjects(t *testing.T) {
 			expectErr:    true,
 		},
 		{
+			testName: "single project with valid path including '~'",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project",
+					"path": "~"
+				}
+			]
+			`,
+
+			expectedData: []models.Project{
+				{Name: "example-project", Path: "~"},
+			},
+			expectErr: false,
+		},
+		{
 			testName: "invalid object",
 			initialDiskData: `
 			[

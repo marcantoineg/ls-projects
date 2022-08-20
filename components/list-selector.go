@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	models "list-my-projects/models/project"
+	models "list-my-projects/models"
+	fileutils "list-my-projects/utils"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -100,12 +101,7 @@ func (m listSelectorModel) Init() tea.Cmd {
 		panic(err)
 	}
 
-	castedItems := make([]list.Item, len(projects))
-	for i := range projects {
-		castedItems[i] = projects[i]
-	}
-
-	return func() tea.Msg { return initMsg{castedItems} }
+	return func() tea.Msg { return initMsg{castToListItem(projects)} }
 }
 
 func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -156,29 +152,6 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m listSelectorModel) View() string {
-	if m.choice != nil {
-		cmd := exec.Command("code", "-n", ".")
-
-		cmd.Dir = m.choice.Path
-		err := cmd.Run()
-		if err != nil {
-			return quitTextStyle.Render(err.Error())
-		}
-		return quitTextStyle.Render(fmt.Sprintf("Opening %s 💻", pathTextStyle.Render(m.choice.Path)))
-	}
-
-	if m.quitting {
-		return quitTextStyle.Render("mmmhhhh-kay.")
-	}
-
-	if m.projectForm != nil {
-		return m.projectForm.View()
-	}
-
-	return "\n" + m.list.View()
-}
-
 // handleKeyMsg handles the keybinding part of the Update function.
 func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
@@ -221,6 +194,29 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	m.list, cmd = m.list.Update(msg)
 	return m, cmd
+}
+
+func (m listSelectorModel) View() string {
+	if m.choice != nil {
+		cmd := exec.Command("code", "-n", ".")
+
+		cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
+		err := cmd.Run()
+		if err != nil {
+			return quitTextStyle.Render(err.Error())
+		}
+		return quitTextStyle.Render(fmt.Sprintf("Opening %s 💻", pathTextStyle.Render(m.choice.Path)))
+	}
+
+	if m.quitting {
+		return quitTextStyle.Render("mmmhhhh-kay.")
+	}
+
+	if m.projectForm != nil {
+		return m.projectForm.View()
+	}
+
+	return "\n" + m.list.View()
 }
 
 // castToListItem takes a list of 'Project's and returns it as a casted list of tea's interface 'list.Item'.

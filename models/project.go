@@ -21,7 +21,7 @@ func (p Project) FilterValue() string {
 
 // ValidatePath returns a boolean value equal to wether or not the path exists on the host.
 func (p Project) ValidatePath() bool {
-	return fileutils.Exists(fileutils.ReplaceTilde(p.Path))
+	return fileutils.Exists(p.Path)
 }
 
 // GetProjects fetches the projects from the disk and returns them.
@@ -51,7 +51,6 @@ func GetProjects() ([]Project, error) {
 			return nil, errors.New("both Name and Path fields are required.")
 		}
 
-		projects[i].Path = fileutils.ReplaceTilde(projects[i].Path)
 		exists := fileutils.Exists(projects[i].Path)
 		if !exists {
 			return nil, errors.New(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
