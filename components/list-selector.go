@@ -132,7 +132,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.list.SetItems(m.items)
 
 		m.list.Styles.Title = successTitleStyle
-		m.list.Title = "Project added!"
+		m.list.Title = fmt.Sprintf("project '%s' added!", msg.project.Name)
 
 		m.projectForm = nil
 
