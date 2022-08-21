@@ -25,16 +25,16 @@ var (
 	blurredButton = fmt.Sprintf("[ %s ]", blurredStyle.Render("Submit"))
 )
 
-func focusedButton(m projectFormModel) string {
-	return focusedStyle(m).Render("[ submit ]")
-}
-
 func focusedStyle(m projectFormModel) lipgloss.Style {
 	if m.isEditMode {
 		return editFocusedStyle
 	} else {
 		return newFocusedStyle
 	}
+}
+
+func focusedButton(m projectFormModel) string {
+	return focusedStyle(m).Render("[ submit ]")
 }
 
 type projectFormModel struct {
@@ -180,11 +180,13 @@ func (m *projectFormModel) updateInputs(msg tea.Msg) tea.Cmd {
 func (m projectFormModel) View() string {
 	var b strings.Builder
 
+	var title string
 	if m.isEditMode {
-		fmt.Fprintf(&b, "\n%s\n\n", editProjectTitleStyle.Render("Edit project"))
+		title = editProjectTitleStyle.Render("Edit project")
 	} else {
-		fmt.Fprintf(&b, "\n%s\n\n", newProjectTitleStyle.Render("Add new project"))
+		title = newProjectTitleStyle.Render("Add new project")
 	}
+	fmt.Fprintf(&b, "\n%s\n\n", title)
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())

@@ -310,7 +310,7 @@ func TestUpdateProject(t *testing.T) {
 			expectErr:        true,
 		},
 		{
-			testName: "out of bound from single on-disk project",
+			testName: "out of bound from multiple on-disk projects",
 			initialDiskData: `
 			[
 				{
