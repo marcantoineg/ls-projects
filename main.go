@@ -9,6 +9,9 @@ import (
 )
 
 func main() {
+	i := 3
+	fmt.Printf("something something %s\n", i)
+
 	p := tea.NewProgram(components.NewListSelector())
 	if err := p.Start(); err != nil {
 		fmt.Println(err)
