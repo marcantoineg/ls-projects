@@ -1,4 +1,4 @@
-package tests
+package project_test
 
 import (
 	"io/ioutil"
@@ -222,6 +222,120 @@ func TestSaveProject(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
 			p, err := models.SaveProject(testRun.project)
+
+			assert.Equal(t, testRun.expectedProjects, p)
+			if testRun.expectErr {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
+}
+
+func TestUpdateProject(t *testing.T) {
+	testRuns := []struct {
+		testName        string
+		initialDiskData string
+		index           int
+		project         models.Project
+
+		expectedProjects []models.Project
+		expectErr        bool
+	}{
+		{
+			testName: "update from single on-disk project",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				}
+			]
+			`,
+			index:   0,
+			project: models.Project{Name: "example-project-2", Path: "./"},
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-2", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName: "update from multiple on-disk projects",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			index:   1,
+			project: models.Project{Name: "example-project-3", Path: "./"},
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-1", Path: "./"},
+				{Name: "example-project-3", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName:        "out of bound from empty list on-disk",
+			initialDiskData: "[]",
+			index:           0,
+			project:         models.Project{Name: "example-project-1", Path: "./"},
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "out of bound from single on-disk project",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				}
+			]
+			`,
+			index:   1,
+			project: models.Project{Name: "example-project-1", Path: "./"},
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "out of bound from multiple on-disk projects",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			index:   3,
+			project: models.Project{Name: "example-project-1", Path: "./"},
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+	}
+
+	for _, testRun := range testRuns {
+		t.Run(testRun.testName, func(t *testing.T) {
+			saveStringToFile(testRun.initialDiskData)
+
+			p, err := models.UpdateProject(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
