@@ -1,6 +1,7 @@
 # list-my-projects
+![ci badge](https://github.com/marcantoineg/list-my-projects/actions/workflows/ci.yml/badge.svg)
 
-A simple cli app to list projects and open them in a new window of VS Code.
+A simple shell app to list projects and open them in a new window of VS Code.
 
 This app uses [Bubble Tea](https://github.com/charmbracelet/bubbletea/) as its UI framework.
 
@@ -12,5 +13,6 @@ You can either use it with `go run main.go` or by exporting it as a binary in yo
 
 ## Screenshots
 
-<img height="300" src="https://user-images.githubusercontent.com/16008095/184463459-f6d2eaeb-6bb3-4f6c-b90f-b4baacf5a555.png">
-<img height="300" src="https://user-images.githubusercontent.com/16008095/184463467-481ac1aa-8205-44ad-b1f8-3dcd2051b893.png">
+| **List** | **New** | **Edit** |
+| - | - | - |
+| <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778404-088da6ad-4a7f-4575-a09d-39c3a3a9921d.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778416-0609afc3-1a96-437d-a408-361b9f4408e6.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778433-d1bb9553-9d14-44c6-9430-887ab4fd47ac.png"> |
