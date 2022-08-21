@@ -12,47 +12,68 @@ import (
 )
 
 var (
-	formTitleStyle      = titleStyle.Copy().MarginLeft(0)
-	focusedStyle        = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
-	blurredStyle        = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	cursorStyle         = focusedStyle.Copy()
-	noStyle             = lipgloss.NewStyle()
-	cursorModeHelpStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
-	formHelpStyle       = blurredStyle.Copy().Italic(true).Faint(true)
-	marginStyle         = lipgloss.NewStyle().MarginLeft(4)
+	newProjectTitleStyle  = titleStyle.Copy().MarginLeft(0)
+	editProjectTitleStyle = newProjectTitleStyle.Copy().Background(lipgloss.Color("#DDB771")).Foreground(lipgloss.Color("#000000"))
+	newFocusedStyle       = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
+	editFocusedStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("#DDB771"))
+	blurredStyle          = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+	noStyle               = lipgloss.NewStyle()
+	cursorModeHelpStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
+	formHelpStyle         = blurredStyle.Copy().Italic(true).Faint(true)
+	marginStyle           = lipgloss.NewStyle().MarginLeft(4)
 
-	focusedButton = focusedStyle.Copy().Render("[ Submit ]")
 	blurredButton = fmt.Sprintf("[ %s ]", blurredStyle.Render("Submit"))
 )
+
+func focusedButton(m projectFormModel) string {
+	return focusedStyle(m).Render("[ submit ]")
+}
+
+func focusedStyle(m projectFormModel) lipgloss.Style {
+	if m.isEditMode {
+		return editFocusedStyle
+	} else {
+		return newFocusedStyle
+	}
+}
 
 type projectFormModel struct {
 	focusIndex        int
 	inputs            []textinput.Model
 	listSelectorModel *listSelectorModel
+	isEditMode        bool
 }
 
-func NewProjectForm(listSelectorModel *listSelectorModel) projectFormModel {
+func NewProjectForm(l *listSelectorModel, project *models.Project) projectFormModel {
 	m := projectFormModel{
 		inputs:            make([]textinput.Model, 2),
-		listSelectorModel: listSelectorModel,
+		listSelectorModel: l,
+		isEditMode:        project != nil,
 	}
 
 	var t textinput.Model
 	for i := range m.inputs {
 		t = textinput.New()
-		t.CursorStyle = cursorStyle
-		t.CharLimit = 64
+		t.CursorStyle = focusedStyle(m)
+		t.CharLimit = 0
 
 		switch i {
 		case 0:
 			t.Placeholder = "Name [*]"
 			t.Focus()
-			t.PromptStyle = focusedStyle
-			t.TextStyle = focusedStyle
+			t.PromptStyle = focusedStyle(m)
+			t.TextStyle = focusedStyle(m)
 			t.Validate = validateTextField
+			if m.isEditMode {
+				t.SetValue(project.Name)
+			}
+
 		case 1:
 			t.Placeholder = "Path [*]"
 			t.Validate = validateTextField
+			if m.isEditMode {
+				t.SetValue(project.Path)
+			}
 		}
 
 		m.inputs[i] = t
@@ -95,7 +116,13 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 
 				if valid := p.ValidatePath(); valid {
-					return m.listSelectorModel.Update(projectCreatedMsg{*p})
+					var msg tea.Msg
+					if m.isEditMode {
+						msg = projectUpdatedMsg{*p}
+					} else {
+						msg = projectCreatedMsg{*p}
+					}
+					return m.listSelectorModel.Update(msg)
 				} else {
 					return m.listSelectorModel.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
 				}
@@ -118,8 +145,8 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			for i := 0; i <= len(m.inputs)-1; i++ {
 				if i == m.focusIndex {
 					cmds[i] = m.inputs[i].Focus()
-					m.inputs[i].PromptStyle = focusedStyle
-					m.inputs[i].TextStyle = focusedStyle
+					m.inputs[i].PromptStyle = focusedStyle(m)
+					m.inputs[i].TextStyle = focusedStyle(m)
 					continue
 				}
 				// Remove focused state
@@ -153,7 +180,11 @@ func (m *projectFormModel) updateInputs(msg tea.Msg) tea.Cmd {
 func (m projectFormModel) View() string {
 	var b strings.Builder
 
-	fmt.Fprintf(&b, "\n%s\n\n", formTitleStyle.Render("Add new project"))
+	if m.isEditMode {
+		fmt.Fprintf(&b, "\n%s\n\n", editProjectTitleStyle.Render("Edit project"))
+	} else {
+		fmt.Fprintf(&b, "\n%s\n\n", newProjectTitleStyle.Render("Add new project"))
+	}
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())
@@ -162,11 +193,11 @@ func (m projectFormModel) View() string {
 		}
 	}
 
-	button := &blurredButton
+	button := blurredButton
 	if m.focusIndex == len(m.inputs) {
-		button = &focusedButton
+		button = focusedButton(m)
 	}
-	fmt.Fprintf(&b, "\n\n%s\n\n", *button)
+	fmt.Fprintf(&b, "\n\n%s\n\n", button)
 
 	fmt.Fprintf(&b, "\n%s", formHelpStyle.Render("[*] marks required fields"))
 
@@ -181,7 +212,11 @@ func validateTextField(v string) error {
 }
 
 type noProjectCreatedMsg struct{}
-type projectCreationErrorMsg error
 type projectCreatedMsg struct {
 	project models.Project
 }
+type projectCreationErrorMsg error
+type projectUpdatedMsg struct {
+	project models.Project
+}
+type projectUpdateErrorMsg error

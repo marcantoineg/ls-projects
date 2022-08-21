@@ -83,13 +83,14 @@ func NewListSelector() tea.Model {
 
 	l.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{
-			key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
-			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
+			key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("enter/space", "select a project")),
 		}
 	}
 	l.AdditionalFullHelpKeys = func() []key.Binding {
 		return []key.Binding{
-			key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("enter/space", "select a project")),
+			key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
+			key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
+			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
 		}
 	}
 
@@ -132,6 +133,21 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.list.Styles.Title = successTitleStyle
 		m.list.Title = fmt.Sprintf("project '%s' added!", msg.project.Name)
+
+		m.projectForm = nil
+
+	case projectUpdatedMsg:
+		projects, err := models.UpdateProject(m.list.Index(), msg.project)
+		if err != nil {
+			m.Update(projectUpdateErrorMsg(err))
+			return m, nil
+		}
+
+		m.items = castToListItem(projects)
+		m.list.SetItems(m.items)
+
+		m.list.Styles.Title = successTitleStyle
+		m.list.Title = fmt.Sprintf("project '%s' updated!", msg.project.Name)
 
 		m.projectForm = nil
 
@@ -185,11 +201,18 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "a":
-		f := NewProjectForm(m)
+		f := NewProjectForm(m, nil)
 		m.projectForm = &f
 
-		model, cmd := m.projectForm.Update(nil)
-		return model, cmd
+		return m.projectForm.Update(nil)
+
+	case "e":
+		if p, ok := m.items[m.list.Index()].(models.Project); ok {
+			f := NewProjectForm(m, &p)
+			m.projectForm = &f
+		}
+
+		return m.projectForm.Update(nil)
 
 	case "d":
 		p, ok := m.list.SelectedItem().(models.Project)
