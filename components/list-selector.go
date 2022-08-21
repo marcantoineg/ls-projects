@@ -53,6 +53,9 @@ var (
 	quitTextStyle = lipgloss.NewStyle().
 			Margin(1, 2)
 
+	fatalErrorStyle = quitTextStyle.Copy().
+			Foreground(lipgloss.Color("#E84855"))
+
 	pathTextStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("170"))
 )
@@ -62,6 +65,7 @@ type listSelectorModel struct {
 	items       []list.Item
 	choice      *models.Project
 	projectForm *projectFormModel
+	fatalError  error
 	quitting    bool
 }
 
@@ -98,7 +102,7 @@ type initMsg struct{ items []list.Item }
 func (m listSelectorModel) Init() tea.Cmd {
 	projects, err := models.GetProjects()
 	if err != nil {
-		panic(err)
+		return func() tea.Msg { return fatalErrorMsg{err} }
 	}
 
 	return func() tea.Msg { return initMsg{castToListItem(projects)} }
@@ -117,13 +121,13 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.list.SetItems(m.items)
 
 	case projectCreatedMsg:
-		_, err := models.SaveProject(msg.project)
+		projects, err := models.SaveProject(msg.project)
 		if err != nil {
 			m.Update(projectCreationErrorMsg(err))
 			return m, nil
 		}
 
-		m.items = append(m.items, msg.project)
+		m.items = castToListItem(projects)
 		m.list.SetItems(m.items)
 
 		m.list.Styles.Title = successTitleStyle
@@ -142,6 +146,13 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.list.Title = msg.Error()
 
 		m.projectForm = nil
+
+	case fatalErrorMsg:
+		m.fatalError = msg.err
+		m.projectForm = nil
+		m.quitting = true
+
+		return m, tea.Quit
 
 	// Keybinding
 	case tea.KeyMsg:
@@ -162,7 +173,15 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "enter", "space":
 		selectedItem := m.list.SelectedItem().(models.Project)
 		m.choice = &selectedItem
-		m.quitting = true
+
+		cmd := exec.Command("code", "-n", ".")
+		cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
+
+		err := cmd.Run()
+		if err != nil {
+			return m, func() tea.Msg { return fatalErrorMsg{err} }
+		}
+
 		return m, tea.Quit
 
 	case "a":
@@ -175,14 +194,14 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "d":
 		p, ok := m.list.SelectedItem().(models.Project)
 		if ok {
-			selectedIndex := m.list.Index()
-			projects, err := models.DeleteProject(selectedIndex, p)
+			projects, err := models.DeleteProject(m.list.Index(), p)
 			if err != nil {
 				m.list.Styles.Title = errorTitleStyle
 				m.list.Title = fmt.Sprintf("error deleting project '%s'", p.Name)
 			}
 
-			cmd := m.list.SetItems(castToListItem(projects))
+			m.items = castToListItem(projects)
+			cmd := m.list.SetItems(m.items)
 
 			m.list.Styles.Title = successTitleStyle
 			m.list.Title = fmt.Sprintf("project '%s' deleted", p.Name)
@@ -197,14 +216,11 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m listSelectorModel) View() string {
-	if m.choice != nil {
-		cmd := exec.Command("code", "-n", ".")
+	if m.fatalError != nil {
+		return fatalErrorStyle.Render(fmt.Sprintf("fatal error:\n\n%s", m.fatalError.Error()))
+	}
 
-		cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
-		err := cmd.Run()
-		if err != nil {
-			return quitTextStyle.Render(err.Error())
-		}
+	if m.choice != nil {
 		return quitTextStyle.Render(fmt.Sprintf("Opening %s 💻", pathTextStyle.Render(m.choice.Path)))
 	}
 
@@ -226,4 +242,8 @@ func castToListItem(projects []models.Project) []list.Item {
 		castedItems[i] = p
 	}
 	return castedItems
+}
+
+type fatalErrorMsg struct {
+	err error
 }
