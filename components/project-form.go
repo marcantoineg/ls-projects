@@ -3,7 +3,7 @@ package components
 import (
 	"errors"
 	"fmt"
-	"list-my-projects/models"
+	models "list-my-projects/models"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"
