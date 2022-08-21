@@ -77,6 +77,28 @@ func SaveProject(project Project) ([]Project, error) {
 	return projects, nil
 }
 
+// EditProject edit the project list on-disk.
+// If the index is not found, an error is returned as the second parameter
+func UpdateProject(index int, project Project) ([]Project, error) {
+	projects, err := GetProjects()
+	if err != nil {
+		return nil, err
+	}
+
+	if index < 0 || index >= len(projects) {
+		return nil, errors.New("index out of bound")
+	}
+
+	projects[index] = project
+
+	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+	if err != nil {
+		return nil, err
+	}
+
+	return projects, nil
+}
+
 // DeleteProject fetches the projects from the disk by index, checks it's the same as the in-memory project, then deletes it from the disk.
 // If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
 func DeleteProject(index int, project Project) ([]Project, error) {
@@ -85,7 +107,7 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 		return nil, err
 	}
 
-	if index >= len(projects) {
+	if index < 0 || index >= len(projects) {
 		return nil, errors.New("project not found")
 	}
 
