@@ -155,6 +155,7 @@ func TestSaveProject(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
+		index           int
 		project         models.Project
 
 		expectedProjects []models.Project
@@ -164,6 +165,8 @@ func TestSaveProject(t *testing.T) {
 			testName:        "save project into empty list",
 			initialDiskData: "[]",
 			project:         models.Project{Name: "example-project", Path: "./"},
+			index:           0,
+
 			expectedProjects: []models.Project{
 				{Name: "example-project", Path: "./"},
 			},
@@ -180,6 +183,8 @@ func TestSaveProject(t *testing.T) {
 			]
 			`,
 			project: models.Project{Name: "example-project-2", Path: "./"},
+			index:   0,
+
 			expectedProjects: []models.Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
@@ -201,6 +206,8 @@ func TestSaveProject(t *testing.T) {
 			]
 			`,
 			project: models.Project{Name: "example-project-3", Path: "./"},
+			index:   1,
+
 			expectedProjects: []models.Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
@@ -209,9 +216,31 @@ func TestSaveProject(t *testing.T) {
 			expectErr: false,
 		},
 		{
-			testName:         "save into invalid list",
-			initialDiskData:  "[{}]",
-			project:          models.Project{Name: "example-project-2", Path: "./"},
+			testName: "index out of bound with multiple elements list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			project: models.Project{Name: "example-project-3", Path: "./"},
+			index:   2,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName:        "save into invalid list",
+			initialDiskData: "[{}]",
+			project:         models.Project{Name: "example-project-2", Path: "./"},
+			index:           0,
+
 			expectedProjects: nil,
 			expectErr:        true,
 		},
@@ -221,7 +250,7 @@ func TestSaveProject(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.SaveProject(testRun.project)
+			p, err := models.SaveProject(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
