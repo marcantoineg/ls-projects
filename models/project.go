@@ -59,15 +59,26 @@ func GetProjects() ([]Project, error) {
 	return projects, err
 }
 
-// SaveProject fetches the projects from the disk, appends the project given as the parameter then save the new projects on the disk.
+// SaveProject fetches the projects from the disk, appends the project given as the parameter at the given index, then saves the new projects on the disk.
 // If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
-func SaveProject(project Project) ([]Project, error) {
-	projects, err := GetProjects()
+func SaveProject(index int, project Project) ([]Project, error) {
+	onDiskProjects, err := GetProjects()
 	if err != nil {
 		return nil, err
 	}
 
-	projects = append(projects, project)
+	if index < 0 || (index >= len(onDiskProjects) && len(onDiskProjects) != 0) {
+		return nil, errors.New("index out of bound")
+	}
+
+	var projects []Project
+	if len(onDiskProjects) == 0 {
+		projects = []Project{project}
+	} else {
+		projects = append([]Project{}, onDiskProjects[:index+1]...)
+		projects = append(projects, project)
+		projects = append(projects, onDiskProjects[index+1:]...)
+	}
 
 	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
 	if err != nil {
