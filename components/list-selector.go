@@ -7,6 +7,7 @@ import (
 	models "list-my-projects/models"
 	fileutils "list-my-projects/utils"
 
+	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -91,6 +92,7 @@ func NewListSelector() tea.Model {
 			key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
 			key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
 			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
+			key.NewBinding(key.WithKeys("y"), key.WithHelp("y", "yank selected project's path")),
 		}
 	}
 
@@ -231,6 +233,19 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 			return m, cmd
 		}
+
+	case "y":
+		if !clipboard.Unsupported {
+			if p, ok := m.list.SelectedItem().(models.Project); ok {
+				clipboard.WriteAll(p.Path)
+
+				m.list.Styles.Title = successTitleStyle
+				m.list.Title = fmt.Sprintf("path for project '%s' copied", p.Name)
+
+				return m, nil
+			}
+		}
+
 	}
 
 	var cmd tea.Cmd
