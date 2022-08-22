@@ -122,7 +122,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.list.SetItems(m.items)
 
 	case projectCreatedMsg:
-		projects, err := models.SaveProject(msg.project)
+		projects, err := models.SaveProject(m.list.Index(), msg.project)
 		if err != nil {
 			m.Update(projectCreationErrorMsg(err))
 			return m, nil
