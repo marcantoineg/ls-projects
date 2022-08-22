@@ -236,10 +236,30 @@ func TestSaveProject(t *testing.T) {
 			expectErr:        true,
 		},
 		{
-			testName:        "negative index",
+			testName:        "negative index with empty list",
 			initialDiskData: "[]",
 			project:         models.Project{Name: "example-project-1", Path: "./"},
 			index:           -1,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "negative index with multiple elements list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			project: models.Project{Name: "example-project-1", Path: "./"},
+			index:   -1,
 
 			expectedProjects: nil,
 			expectErr:        true,
