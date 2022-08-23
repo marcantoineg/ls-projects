@@ -3,6 +3,7 @@ package project_test
 import (
 	"io/ioutil"
 	models "list-my-projects/models"
+	fileutils "list-my-projects/utils"
 
 	"os"
 	"testing"
@@ -10,18 +11,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const (
-	testProjectsFilePath = "./test.projects.json"
-)
-
 func TestMain(m *testing.M) {
 	// setup
-	os.Remove(testProjectsFilePath)
+	os.Remove(fileutils.GetFullProjectsFilePath())
 
 	code := m.Run()
 
 	// teardown
-	os.Remove(testProjectsFilePath)
+	os.Remove(fileutils.GetFullProjectsFilePath())
 
 	os.Exit(code)
 }
@@ -538,6 +535,178 @@ func TestDeleteProject(t *testing.T) {
 	}
 }
 
+func TestSwapIndex(t *testing.T) {
+	testRuns := []struct {
+		testName        string
+		initialDiskData string
+		initialIndex    int
+		targetIndex     int
+
+		expectedProjects []models.Project
+		expectErr        bool
+	}{
+		{
+			testName: "swap project from single element list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				}
+			]
+			`,
+			initialIndex: 0,
+			targetIndex:  0,
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-1", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName: "swap project from two elements list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			initialIndex: 0,
+			targetIndex:  1,
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-2", Path: "./"},
+				{Name: "example-project-1", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName: "swap project from mutliple (3+) elements list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				},
+				{
+					"name": "example-project-3",
+					"path": "./"
+				}
+			]
+			`,
+			initialIndex: 1,
+			targetIndex:  2,
+
+			expectedProjects: []models.Project{
+				{Name: "example-project-1", Path: "./"},
+				{Name: "example-project-3", Path: "./"},
+				{Name: "example-project-2", Path: "./"},
+			},
+			expectErr: false,
+		},
+		{
+			testName:        "swap project out of bound initial index - empty list",
+			initialDiskData: "[]",
+			initialIndex:    1,
+			targetIndex:     0,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName:        "swap project out of bound target index - empty list",
+			initialDiskData: "[]",
+			initialIndex:    0,
+			targetIndex:     1,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName:        "swap project out of bound initial index - negative",
+			initialDiskData: "[]",
+			initialIndex:    -1,
+			targetIndex:     0,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName:        "swap project out of bound target index - negative",
+			initialDiskData: "[]",
+			initialIndex:    0,
+			targetIndex:     -1,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "swap project out of bound initial index - not empty list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			initialIndex: 2,
+			targetIndex:  0,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+		{
+			testName: "swap project out of bound target index - not empty list",
+			initialDiskData: `
+			[
+				{
+					"name": "example-project-1",
+					"path": "./"
+				},
+				{
+					"name": "example-project-2",
+					"path": "./"
+				}
+			]
+			`,
+			initialIndex: 0,
+			targetIndex:  2,
+
+			expectedProjects: nil,
+			expectErr:        true,
+		},
+	}
+
+	for _, testRun := range testRuns {
+		t.Run(testRun.testName, func(t *testing.T) {
+			saveStringToFile(testRun.initialDiskData)
+
+			p, err := models.SwapProjectIndex(testRun.initialIndex, testRun.targetIndex)
+			assert.Equal(t, testRun.expectedProjects, p)
+			if testRun.expectErr {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
+}
+
 func saveStringToFile(data string) error {
-	return ioutil.WriteFile(testProjectsFilePath, []byte(data), os.ModePerm)
+	return ioutil.WriteFile(fileutils.GetFullProjectsFilePath(), []byte(data), os.ModePerm)
 }

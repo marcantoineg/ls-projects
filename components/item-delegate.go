@@ -6,9 +6,25 @@ import (
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
-type itemDelegate struct{}
+type itemDelegate struct {
+	movingModeInitialIndex int
+}
+
+var (
+	itemStyle = lipgloss.NewStyle().
+			PaddingLeft(4)
+
+	selectedItemStyle = lipgloss.NewStyle().
+				Foreground(lipgloss.Color("#6C91BF")).
+				PaddingLeft(2)
+
+	selectedItemForMovingStyle = lipgloss.NewStyle().
+					Foreground(lipgloss.Color("#4d4d4d")).
+					PaddingLeft(2)
+)
 
 func (d itemDelegate) Height() int                               { return 1 }
 func (d itemDelegate) Spacing() int                              { return 0 }
@@ -20,6 +36,10 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 	if index == m.Index() {
 		fn = func(s string) string {
 			return selectedItemStyle.Render("> " + s)
+		}
+	} else if index == d.movingModeInitialIndex {
+		fn = func(s string) string {
+			return selectedItemForMovingStyle.Render("* " + s)
 		}
 	}
 
