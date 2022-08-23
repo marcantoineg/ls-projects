@@ -34,12 +34,8 @@ var (
 	errorTitleStyle = titleStyle.Copy().
 			Background(lipgloss.Color("#E84855"))
 
-	itemStyle = lipgloss.NewStyle().
-			PaddingLeft(4)
-
-	selectedItemStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("#6C91BF")).
-				PaddingLeft(2)
+	movingTitleStyle = titleStyle.Copy().
+				Background(lipgloss.Color("#4d4d4d"))
 
 	noItemsStyle = list.DefaultStyles().NoItems.
 			MarginLeft(4)
@@ -62,16 +58,18 @@ var (
 )
 
 type listSelectorModel struct {
-	list        list.Model
-	items       []list.Item
-	choice      *models.Project
-	projectForm *projectFormModel
-	fatalError  error
-	quitting    bool
+	list               list.Model
+	items              []list.Item
+	choice             *models.Project
+	projectForm        *projectFormModel
+	fatalError         error
+	movingModeActive   bool
+	movingInitialIndex int
+	quitting           bool
 }
 
 func NewListSelector() tea.Model {
-	l := list.New([]list.Item{}, itemDelegate{}, listWidth, listHeight)
+	l := list.New([]list.Item{}, itemDelegate{movingInitialIndex: -1}, listWidth, listHeight)
 
 	l.Title = initialTitle
 	l.SetShowStatusBar(false)
@@ -93,6 +91,7 @@ func NewListSelector() tea.Model {
 			key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
 			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
 			key.NewBinding(key.WithKeys("y"), key.WithHelp("y", "yank selected project's path")),
+			key.NewBinding(key.WithKeys("m"), key.WithHelp("m", "enter moving mode")),
 		}
 	}
 
@@ -154,9 +153,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.projectForm = nil
 
 	case noProjectCreatedMsg:
-		m.list.Styles.Title = titleStyle
-		m.list.Title = initialTitle
-
+		resetListTitle(&m)
 		m.projectForm = nil
 
 	case projectCreationErrorMsg:
@@ -185,57 +182,81 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
 	case "ctrl+c", "q", "esc":
+		if m.movingModeActive {
+			disableMovingMode(m)
+			return m, nil
+		}
+
 		m.quitting = true
 		return m, tea.Quit
 
 	case "enter", "space":
-		selectedItem := m.list.SelectedItem().(models.Project)
-		m.choice = &selectedItem
+		if !m.movingModeActive {
+			selectedItem := m.list.SelectedItem().(models.Project)
+			m.choice = &selectedItem
 
-		cmd := exec.Command("code", "-n", ".")
-		cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
+			cmd := exec.Command("code", "-n", ".")
+			cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
 
-		err := cmd.Run()
-		if err != nil {
-			return m, func() tea.Msg { return fatalErrorMsg{err} }
-		}
-
-		return m, tea.Quit
-
-	case "a":
-		f := NewProjectForm(m, nil)
-		m.projectForm = &f
-
-		return m.projectForm.Update(nil)
-
-	case "e":
-		if p, ok := m.items[m.list.Index()].(models.Project); ok {
-			f := NewProjectForm(m, &p)
-			m.projectForm = &f
-		}
-
-		return m.projectForm.Update(nil)
-
-	case "d":
-		p, ok := m.list.SelectedItem().(models.Project)
-		if ok {
-			projects, err := models.DeleteProject(m.list.Index(), p)
+			err := cmd.Run()
 			if err != nil {
-				m.list.Styles.Title = errorTitleStyle
-				m.list.Title = fmt.Sprintf("error deleting project '%s'", p.Name)
+				return m, func() tea.Msg { return fatalErrorMsg{err} }
+			}
+
+			return m, tea.Quit
+		} else {
+			projects, err := models.SwapProjectIndex(m.movingInitialIndex, m.list.Index())
+			if err != nil {
+				m.Update(projectUpdateErrorMsg(err))
+				return m, nil
 			}
 
 			m.items = castToListItem(projects)
-			cmd := m.list.SetItems(m.items)
+			m.list.SetItems(m.items)
 
-			m.list.Styles.Title = successTitleStyle
-			m.list.Title = fmt.Sprintf("project '%s' deleted", p.Name)
+			disableMovingMode(m)
+		}
 
-			return m, cmd
+	case "a":
+		if !m.movingModeActive {
+			f := NewProjectForm(m, nil)
+			m.projectForm = &f
+
+			return m.projectForm.Update(nil)
+		}
+
+	case "e":
+		if !m.movingModeActive {
+			if p, ok := m.items[m.list.Index()].(models.Project); ok {
+				f := NewProjectForm(m, &p)
+				m.projectForm = &f
+			}
+
+			return m.projectForm.Update(nil)
+		}
+
+	case "d":
+		if !m.movingModeActive {
+			p, ok := m.list.SelectedItem().(models.Project)
+			if ok {
+				projects, err := models.DeleteProject(m.list.Index(), p)
+				if err != nil {
+					m.list.Styles.Title = errorTitleStyle
+					m.list.Title = fmt.Sprintf("error deleting project '%s'", p.Name)
+				}
+
+				m.items = castToListItem(projects)
+				cmd := m.list.SetItems(m.items)
+
+				m.list.Styles.Title = successTitleStyle
+				m.list.Title = fmt.Sprintf("project '%s' deleted", p.Name)
+
+				return m, cmd
+			}
 		}
 
 	case "y":
-		if !clipboard.Unsupported {
+		if !clipboard.Unsupported && !m.movingModeActive {
 			if p, ok := m.list.SelectedItem().(models.Project); ok {
 				clipboard.WriteAll(p.Path)
 
@@ -245,6 +266,14 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 		}
+
+	case "m":
+		m.movingInitialIndex = m.list.Index()
+		m.list.SetDelegate(itemDelegate{movingInitialIndex: m.movingInitialIndex})
+		m.movingModeActive = true
+
+		m.list.Styles.Title = movingTitleStyle
+		m.list.Title = "select another project to swap position"
 
 	}
 
@@ -280,6 +309,20 @@ func castToListItem(projects []models.Project) []list.Item {
 		castedItems[i] = p
 	}
 	return castedItems
+}
+
+// resetListTitle resets the initial style and text of the list's title.
+func resetListTitle(m *listSelectorModel) {
+	m.list.Styles.Title = titleStyle
+	m.list.Title = initialTitle
+}
+
+// disableMovingMode resets required value to disable the moving mode.
+func disableMovingMode(m *listSelectorModel) {
+	m.movingInitialIndex = -1
+	m.movingModeActive = false
+	m.list.SetDelegate(itemDelegate{movingInitialIndex: -1})
+	resetListTitle(m)
 }
 
 type fatalErrorMsg struct {
