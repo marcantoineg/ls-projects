@@ -13,6 +13,7 @@ You can either use it with `go run main.go` or by exporting it as a binary in yo
 
 ## Screenshots
 
-| **List** | **New** | **Edit** |
-| - | - | - |
-| <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778404-088da6ad-4a7f-4575-a09d-39c3a3a9921d.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778416-0609afc3-1a96-437d-a408-361b9f4408e6.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/185778433-d1bb9553-9d14-44c6-9430-887ab4fd47ac.png"> |
+| **List** | **Form** |
+| - | - |
+| <img height="250px" src="https://user-images.githubusercontent.com/16008095/186266791-2ed13ab6-9b87-4004-998c-eeffa9d3fa13.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/186266988-c0722604-84aa-47e0-a6c9-c4101b03d91f.png">
+| <img height="250px" src="https://user-images.githubusercontent.com/16008095/186266868-467a9f86-dab0-474c-aed8-28ace1d6c3b7.png"> | <img height="250px" src="https://user-images.githubusercontent.com/16008095/186267110-3b90a244-0322-4904-9a09-e641449b823a.png"> |
