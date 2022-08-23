@@ -58,18 +58,18 @@ var (
 )
 
 type listSelectorModel struct {
-	list               list.Model
-	items              []list.Item
-	choice             *models.Project
-	projectForm        *projectFormModel
-	fatalError         error
-	movingModeActive   bool
-	movingInitialIndex int
-	quitting           bool
+	list                   list.Model
+	items                  []list.Item
+	choice                 *models.Project
+	projectForm            *projectFormModel
+	fatalError             error
+	movingModeActive       bool
+	movingModeInitialIndex int
+	quitting               bool
 }
 
 func NewListSelector() tea.Model {
-	l := list.New([]list.Item{}, itemDelegate{movingInitialIndex: -1}, listWidth, listHeight)
+	l := list.New([]list.Item{}, itemDelegate{movingModeInitialIndex: -1}, listWidth, listHeight)
 
 	l.Title = initialTitle
 	l.SetShowStatusBar(false)
@@ -205,7 +205,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 			return m, tea.Quit
 		} else {
-			projects, err := models.SwapProjectIndex(m.movingInitialIndex, m.list.Index())
+			projects, err := models.SwapProjectIndex(m.movingModeInitialIndex, m.list.Index())
 			if err != nil {
 				m.Update(projectUpdateErrorMsg(err))
 				return m, nil
@@ -268,8 +268,8 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 
 	case "m":
-		m.movingInitialIndex = m.list.Index()
-		m.list.SetDelegate(itemDelegate{movingInitialIndex: m.movingInitialIndex})
+		m.movingModeInitialIndex = m.list.Index()
+		m.list.SetDelegate(itemDelegate{movingModeInitialIndex: m.movingModeInitialIndex})
 		m.movingModeActive = true
 
 		m.list.Styles.Title = movingTitleStyle
@@ -319,9 +319,9 @@ func resetListTitle(m *listSelectorModel) {
 
 // disableMovingMode resets required value to disable the moving mode.
 func disableMovingMode(m *listSelectorModel) {
-	m.movingInitialIndex = -1
+	m.movingModeInitialIndex = -1
 	m.movingModeActive = false
-	m.list.SetDelegate(itemDelegate{movingInitialIndex: -1})
+	m.list.SetDelegate(itemDelegate{movingModeInitialIndex: -1})
 	resetListTitle(m)
 }
 

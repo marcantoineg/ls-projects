@@ -10,7 +10,7 @@ import (
 )
 
 type itemDelegate struct {
-	movingInitialIndex int
+	movingModeInitialIndex int
 }
 
 var (
@@ -37,7 +37,7 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		fn = func(s string) string {
 			return selectedItemStyle.Render("> " + s)
 		}
-	} else if index == d.movingInitialIndex {
+	} else if index == d.movingModeInitialIndex {
 		fn = func(s string) string {
 			return selectedItemForMovingStyle.Render("* " + s)
 		}
