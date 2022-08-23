@@ -136,3 +136,30 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 
 	return projects, nil
 }
+
+// SwapProjectIndex fetches the projects from the disk, swap both projects by index then saves the updated list.
+// Returns the updated list if no error occurs. Forwards the error otherwise.
+func SwapProjectIndex(initialIndex int, targetIndex int) ([]Project, error) {
+	projects, err := GetProjects()
+	if err != nil {
+		return nil, err
+	}
+
+	if initialIndex < 0 || initialIndex >= len(projects) {
+		return nil, errors.New("initial index out of bound")
+	} else if targetIndex < 0 || targetIndex >= len(projects) {
+		return nil, errors.New("target index out of bound")
+	}
+
+	if initialIndex == targetIndex {
+		return projects, nil
+	}
+
+	p := projects[initialIndex]
+	projects[initialIndex] = projects[targetIndex]
+	projects[targetIndex] = p
+
+	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+
+	return projects, nil
+}
