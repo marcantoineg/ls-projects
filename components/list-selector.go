@@ -34,7 +34,7 @@ var (
 	errorTitleStyle = titleStyle.Copy().
 			Background(lipgloss.Color("#E84855"))
 
-	movingTitleStyle = titleStyle.Copy().
+	movingModeTitleStyle = titleStyle.Copy().
 				Background(lipgloss.Color("#4d4d4d"))
 
 	noItemsStyle = list.DefaultStyles().NoItems.
@@ -272,7 +272,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.list.SetDelegate(itemDelegate{movingModeInitialIndex: m.movingModeInitialIndex})
 		m.movingModeActive = true
 
-		m.list.Styles.Title = movingTitleStyle
+		m.list.Styles.Title = movingModeTitleStyle
 		m.list.Title = "select another project to swap position"
 
 	}
