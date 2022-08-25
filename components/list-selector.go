@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	models "list-my-projects/models"
-	fileutils "list-my-projects/utils"
+	"list-my-projects/models"
+	"list-my-projects/utils"
 
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/key"
@@ -196,7 +196,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.choice = &selectedItem
 
 			cmd := exec.Command("code", "-n", ".")
-			cmd.Dir = fileutils.ReplaceTilde(m.choice.Path)
+			cmd.Dir = utils.ReplaceTilde(m.choice.Path)
 
 			err := cmd.Run()
 			if err != nil {

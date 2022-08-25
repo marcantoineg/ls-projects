@@ -1,10 +1,10 @@
-package project
+package models
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	fileutils "list-my-projects/utils"
+	"list-my-projects/utils"
 )
 
 // A Project stores simple information about a project on disk.
@@ -21,20 +21,20 @@ func (p Project) FilterValue() string {
 
 // ValidatePath returns a boolean value equal to wether or not the path exists on the host.
 func (p Project) ValidatePath() bool {
-	return fileutils.Exists(p.Path)
+	return utils.Exists(p.Path)
 }
 
 // GetProjects fetches the projects from the disk and returns them.
 // If an error happens throughout the process, returns the error as the second return value.
 func GetProjects() ([]Project, error) {
-	if exists := fileutils.Exists(fileutils.GetFullProjectsFilePath()); !exists {
-		err := fileutils.CreateEmptyProjectsFile()
+	if exists := utils.Exists(utils.GetFullProjectsFilePath()); !exists {
+		err := utils.CreateEmptyProjectsFile()
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	bytes, err := fileutils.ReadFromFile(fileutils.GetFullProjectsFilePath())
+	bytes, err := utils.ReadFromFile(utils.GetFullProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func GetProjects() ([]Project, error) {
 			return nil, errors.New("both Name and Path fields are required.")
 		}
 
-		exists := fileutils.Exists(projects[i].Path)
+		exists := utils.Exists(projects[i].Path)
 		if !exists {
 			return nil, errors.New(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
 		}
@@ -80,7 +80,7 @@ func SaveProject(index int, project Project) ([]Project, error) {
 		projects = append(projects, onDiskProjects[index+1:]...)
 	}
 
-	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func UpdateProject(index int, project Project) ([]Project, error) {
 
 	projects[index] = project
 
-	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 
 	projects = append(projects[:index], projects[index+1:]...)
 
-	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func SwapProjectIndex(initialIndex int, targetIndex int) ([]Project, error) {
 	projects[initialIndex] = projects[targetIndex]
 	projects[targetIndex] = p
 
-	err = fileutils.SaveToFile(projects, fileutils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
 
 	return projects, nil
 }
