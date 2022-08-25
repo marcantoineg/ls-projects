@@ -237,8 +237,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "d":
 		if !m.movingModeActive {
-			p, ok := m.list.SelectedItem().(models.Project)
-			if ok {
+			if p, ok := m.list.SelectedItem().(models.Project); ok {
 				projects, err := models.DeleteProject(m.list.Index(), p)
 				if err != nil {
 					m.list.Styles.Title = errorTitleStyle
