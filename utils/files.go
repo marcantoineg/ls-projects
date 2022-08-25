@@ -10,23 +10,34 @@ import (
 )
 
 const (
-	projectsFilePath     = "~/.config/list-my-projects"
+	appDataPath          = "~/.config/list-my-projects"
 	projectsFileName     = ".projects.json"
+	configFileName       = ".config.json"
 	testProjectsFilePath = "./test.projects.json"
+	testConfigFilePath   = "./test.config.json"
 )
 
-// GetFullProjectsFilePath returns an absolute path to the projects file.
+// GetFullProjectsFilePath returns the absolute path to the projects file.
 func GetFullProjectsFilePath() string {
 	if flag.Lookup("test.v") == nil {
-		return GetProjectsFilePath() + "/" + projectsFileName
+		return dataAbsolutePath() + "/" + projectsFileName
 	} else {
 		return testProjectsFilePath
 	}
 }
 
-// GetProjectsFilePath returns an absolute path to the projects file directory.
-func GetProjectsFilePath() string {
-	return ReplaceTilde(projectsFilePath)
+// GetFullConfigPath returns the absolute path to the config file.
+func GetFullConfigPath() string {
+	if flag.Lookup("test.v") == nil {
+		return dataAbsolutePath() + "/" + configFileName
+	} else {
+		return testConfigFilePath
+	}
+}
+
+// dataAbsoluatePath returns the absolute path to app's data directory.
+func dataAbsolutePath() string {
+	return ReplaceTilde(appDataPath)
 }
 
 // SaveToFile encodes to JSON a list of items then saves it to a specified file.
@@ -46,9 +57,9 @@ func ReadFromFile(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 
 	bytes, err := ioutil.ReadAll(file)
-	file.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +69,7 @@ func ReadFromFile(filePath string) ([]byte, error) {
 
 // CreateEmptyProjectsFile creates the required file to load and add new projects.
 func CreateEmptyProjectsFile() error {
-	err := os.MkdirAll(GetProjectsFilePath(), os.ModePerm)
+	err := os.MkdirAll(dataAbsolutePath(), os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -67,13 +78,13 @@ func CreateEmptyProjectsFile() error {
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
 	_, err = file.WriteString("[]")
 	if err != nil {
 		return err
 	}
 
-	file.Close()
 	return nil
 }
 
