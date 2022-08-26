@@ -3,7 +3,7 @@ package project_test
 import (
 	"io/ioutil"
 	models "list-my-projects/models"
-	"list-my-projects/utils"
+	"list-my-projects/utils/config"
 
 	"os"
 	"testing"
@@ -13,12 +13,12 @@ import (
 
 func TestMain(m *testing.M) {
 	// setup
-	os.Remove(utils.GetFullProjectsFilePath())
+	os.Remove(getProjectsFilePath())
 
 	code := m.Run()
 
 	// teardown
-	os.Remove(utils.GetFullProjectsFilePath())
+	os.Remove(getProjectsFilePath())
 
 	os.Exit(code)
 }
@@ -708,5 +708,9 @@ func TestSwapIndex(t *testing.T) {
 }
 
 func saveStringToFile(data string) error {
-	return ioutil.WriteFile(utils.GetFullProjectsFilePath(), []byte(data), os.ModePerm)
+	return ioutil.WriteFile(getProjectsFilePath(), []byte(data), os.ModePerm)
+}
+
+func getProjectsFilePath() string {
+	return config.GetInstance().ProjectsPath
 }

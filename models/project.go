@@ -1,10 +1,10 @@
 package models
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"list-my-projects/utils"
+	"list-my-projects/utils/config"
 )
 
 // A Project stores simple information about a project on disk.
@@ -27,20 +27,15 @@ func (p Project) ValidatePath() bool {
 // GetProjects fetches the projects from the disk and returns them.
 // If an error happens throughout the process, returns the error as the second return value.
 func GetProjects() ([]Project, error) {
-	if exists := utils.Exists(utils.GetFullProjectsFilePath()); !exists {
-		err := utils.CreateEmptyProjectsFile()
+	if exists := utils.Exists(getProjectsFilePath()); !exists {
+		err := utils.CreateEmptyListFile(getProjectsFilePath())
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	bytes, err := utils.ReadFromFile(utils.GetFullProjectsFilePath())
-	if err != nil {
-		return nil, err
-	}
-
 	var projects []Project
-	err = json.Unmarshal(bytes, &projects)
+	err := utils.ReadFromFile(&projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +75,7 @@ func SaveProject(index int, project Project) ([]Project, error) {
 		projects = append(projects, onDiskProjects[index+1:]...)
 	}
 
-	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +97,7 @@ func UpdateProject(index int, project Project) ([]Project, error) {
 
 	projects[index] = project
 
-	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +124,7 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 
 	projects = append(projects[:index], projects[index+1:]...)
 
-	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +154,12 @@ func SwapProjectIndex(initialIndex int, targetIndex int) ([]Project, error) {
 	projects[initialIndex] = projects[targetIndex]
 	projects[targetIndex] = p
 
-	err = utils.SaveToFile(projects, utils.GetFullProjectsFilePath())
+	err = utils.SaveToFile(projects, getProjectsFilePath())
 
 	return projects, nil
+}
+
+// getProjectsFilePath fetches the projects file path from the app's config.
+func getProjectsFilePath() string {
+	return config.GetInstance().ProjectsPath
 }
