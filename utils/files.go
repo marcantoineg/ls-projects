@@ -3,45 +3,15 @@ package utils
 
 import (
 	"encoding/json"
-	"flag"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
-
-const (
-	appDataPath          = "~/.config/list-my-projects"
-	projectsFileName     = ".projects.json"
-	configFileName       = ".config.json"
-	testProjectsFilePath = "./test.projects.json"
-	testConfigFilePath   = "./test.config.json"
-)
-
-// GetFullProjectsFilePath returns the absolute path to the projects file.
-func GetFullProjectsFilePath() string {
-	if flag.Lookup("test.v") == nil {
-		return dataAbsolutePath() + "/" + projectsFileName
-	} else {
-		return testProjectsFilePath
-	}
-}
-
-// GetFullConfigPath returns the absolute path to the config file.
-func GetFullConfigPath() string {
-	if flag.Lookup("test.v") == nil {
-		return dataAbsolutePath() + "/" + configFileName
-	} else {
-		return testConfigFilePath
-	}
-}
-
-// dataAbsoluatePath returns the absolute path to app's data directory.
-func dataAbsolutePath() string {
-	return ReplaceTilde(appDataPath)
-}
 
 // SaveToFile encodes to JSON a list of items then saves it to a specified file.
-func SaveToFile[T any](items []T, filePath string) error {
+func SaveToFile[T any](items T, filePath string) error {
 	v, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		return err
@@ -52,35 +22,52 @@ func SaveToFile[T any](items []T, filePath string) error {
 }
 
 // ReadFromFile tries to open the file at the given file path and returns all its content.
-func ReadFromFile(filePath string) ([]byte, error) {
-	file, err := os.Open(filePath)
+func ReadFromFile[T any](data *T, filePath string) error {
+	file, err := os.Open(ReplaceTilde(filePath))
 	if err != nil {
-		return nil, err
+		return errors.New(fmt.Sprintf("error opening file '%s'\n\n%s", filePath, err))
 	}
 	defer file.Close()
 
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		return nil, err
+		return errors.New(fmt.Sprintf("error reading file '%s'\n\n%s", filePath, err))
 	}
 
-	return bytes, nil
+	err = json.Unmarshal(bytes, data)
+	if err != nil {
+		return errors.New(fmt.Sprintf("error decoding objects from file '%s'\n\n%s", filePath, err))
+	}
+
+	return nil
 }
 
-// CreateEmptyProjectsFile creates the required file to load and add new projects.
-func CreateEmptyProjectsFile() error {
-	err := os.MkdirAll(dataAbsolutePath(), os.ModePerm)
+// CreateEmptyListFile creates the required directories and file containing an empty list.
+func CreateEmptyFile(filePath string) error {
+	return overwriteFileWithString(filePath, "")
+}
+
+// CreateEmptyListFile creates the required directories and file containing an empty list.
+func CreateEmptyListFile(filePath string) error {
+	return overwriteFileWithString(filePath, "[]")
+}
+
+// overwriteFileWithString creates or overwrites an existing file with the data provided.
+// It also creates all required directory to the file if necessary.
+func overwriteFileWithString(filePath string, data string) error {
+	dataDir := filepath.Dir(filePath)
+	err := os.MkdirAll(dataDir, os.ModePerm)
 	if err != nil {
 		return err
 	}
 
-	file, err := os.Create(GetFullProjectsFilePath())
+	file, err := os.Create(filePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	_, err = file.WriteString("[]")
+	_, err = file.WriteString(data)
 	if err != nil {
 		return err
 	}
@@ -91,7 +78,7 @@ func CreateEmptyProjectsFile() error {
 // ReplaceTilde returns a string with the tilde character replaced by the user's home directory
 func ReplaceTilde(filePath string) string {
 	var newString = filePath
-	if filePath[0] == '~' {
+	if len(filePath) > 0 && filePath[0] == '~' {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
 			fmt.Println(err)
