@@ -283,7 +283,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 func (m listSelectorModel) View() string {
 	if m.fatalError != nil {
-		return fatalErrorStyle.Render(fmt.Sprintf("fatal error:\n\n%s", m.fatalError.Error()))
+		return fatalErrorStyle.Render(fmt.Sprintf("fatal error:\n\n%s", m.fatalError))
 	}
 
 	if m.choice != nil {
