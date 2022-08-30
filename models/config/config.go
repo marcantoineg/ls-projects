@@ -7,8 +7,8 @@ const (
 	appDataPath          = "~/.config/list-my-projects"
 	projectsFileName     = ".projects.json"
 	configFileName       = ".config.json"
-	testProjectsFilePath = "../../tests/test.projects.json"
-	testConfigFilePath   = "../../tests/test.config.json"
+	testProjectsFilePath = "./tests/default.test.projects.json"
+	testConfigFilePath   = "./tests/default.test.config.json"
 )
 
 // Config represents the app's configuration on-disk as well as in memory.
