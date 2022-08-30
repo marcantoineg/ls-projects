@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	"list-my-projects/models"
-	"list-my-projects/utils"
+	"list-my-projects/fileutil"
+	"list-my-projects/models/project"
 
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/key"
@@ -60,7 +60,7 @@ var (
 type listSelectorModel struct {
 	list                   list.Model
 	items                  []list.Item
-	choice                 *models.Project
+	choice                 *project.Project
 	projectForm            *projectFormModel
 	fatalError             error
 	movingModeActive       bool
@@ -102,7 +102,7 @@ func NewListSelector() tea.Model {
 type initMsg struct{ items []list.Item }
 
 func (m listSelectorModel) Init() tea.Cmd {
-	projects, err := models.GetProjects()
+	projects, err := project.GetAll()
 	if err != nil {
 		return func() tea.Msg { return fatalErrorMsg{err} }
 	}
@@ -123,7 +123,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.list.SetItems(m.items)
 
 	case projectCreatedMsg:
-		projects, err := models.SaveProject(m.list.Index(), msg.project)
+		projects, err := project.Save(m.list.Index(), msg.project)
 		if err != nil {
 			m.Update(projectCreationErrorMsg(err))
 			return m, nil
@@ -138,7 +138,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.projectForm = nil
 
 	case projectUpdatedMsg:
-		projects, err := models.UpdateProject(m.list.Index(), msg.project)
+		projects, err := project.Update(m.list.Index(), msg.project)
 		if err != nil {
 			m.Update(projectUpdateErrorMsg(err))
 			return m, nil
@@ -192,11 +192,11 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "enter", "space":
 		if !m.movingModeActive {
-			selectedItem := m.list.SelectedItem().(models.Project)
+			selectedItem := m.list.SelectedItem().(project.Project)
 			m.choice = &selectedItem
 
 			cmd := exec.Command("code", "-n", ".")
-			cmd.Dir = utils.ReplaceTilde(m.choice.Path)
+			cmd.Dir = fileutil.ReplaceTilde(m.choice.Path)
 
 			err := cmd.Run()
 			if err != nil {
@@ -205,7 +205,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 			return m, tea.Quit
 		} else {
-			projects, err := models.SwapProjectIndex(m.movingModeInitialIndex, m.list.Index())
+			projects, err := project.SwapIndex(m.movingModeInitialIndex, m.list.Index())
 			if err != nil {
 				m.Update(projectUpdateErrorMsg(err))
 				return m, nil
@@ -227,7 +227,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "e":
 		if !m.movingModeActive {
-			if p, ok := m.items[m.list.Index()].(models.Project); ok {
+			if p, ok := m.items[m.list.Index()].(project.Project); ok {
 				f := NewProjectForm(m, &p)
 				m.projectForm = &f
 			}
@@ -237,8 +237,8 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "d":
 		if !m.movingModeActive {
-			if p, ok := m.list.SelectedItem().(models.Project); ok {
-				projects, err := models.DeleteProject(m.list.Index(), p)
+			if p, ok := m.list.SelectedItem().(project.Project); ok {
+				projects, err := project.Delete(m.list.Index(), p)
 				if err != nil {
 					m.list.Styles.Title = errorTitleStyle
 					m.list.Title = fmt.Sprintf("error deleting project '%s'", p.Name)
@@ -256,7 +256,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "y":
 		if !clipboard.Unsupported && !m.movingModeActive {
-			if p, ok := m.list.SelectedItem().(models.Project); ok {
+			if p, ok := m.list.SelectedItem().(project.Project); ok {
 				clipboard.WriteAll(p.Path)
 
 				m.list.Styles.Title = successTitleStyle
@@ -302,7 +302,7 @@ func (m listSelectorModel) View() string {
 }
 
 // castToListItem takes a list of 'Project's and returns it as a casted list of tea's interface 'list.Item'.
-func castToListItem(projects []models.Project) []list.Item {
+func castToListItem(projects []project.Project) []list.Item {
 	castedItems := make([]list.Item, len(projects))
 	for i, p := range projects {
 		castedItems[i] = p
