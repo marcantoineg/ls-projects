@@ -168,7 +168,7 @@ func Test_initConfig(t *testing.T) {
 
 			assert.FileExists(t, configPath)
 
-			os.RemoveAll(configPath)
+			os.Remove(configPath)
 		})
 	}
 }

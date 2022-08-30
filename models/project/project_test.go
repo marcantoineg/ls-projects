@@ -18,6 +18,7 @@ func TestMain(m *testing.M) {
 
 	// teardown
 	os.Remove(getProjectsFilePath())
+	os.Remove(config.GetInstance().ConfigPath)
 
 	os.Exit(code)
 }
