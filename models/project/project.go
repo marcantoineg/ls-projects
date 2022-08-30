@@ -1,10 +1,11 @@
-package models
+// todo
+package project
 
 import (
 	"errors"
 	"fmt"
-	"list-my-projects/utils"
-	"list-my-projects/utils/config"
+	"list-my-projects/fileutil"
+	"list-my-projects/models/config"
 )
 
 // A Project stores simple information about a project on disk.
@@ -21,21 +22,21 @@ func (p Project) FilterValue() string {
 
 // ValidatePath returns a boolean value equal to wether or not the path exists on the host.
 func (p Project) ValidatePath() bool {
-	return utils.Exists(p.Path)
+	return fileutil.Exists(p.Path)
 }
 
-// GetProjects fetches the projects from the disk and returns them.
+// GetAll fetches the projects from the disk and returns them.
 // If an error happens throughout the process, returns the error as the second return value.
-func GetProjects() ([]Project, error) {
-	if exists := utils.Exists(getProjectsFilePath()); !exists {
-		err := utils.CreateEmptyListFile(getProjectsFilePath())
+func GetAll() ([]Project, error) {
+	if exists := fileutil.Exists(getProjectsFilePath()); !exists {
+		err := fileutil.CreateEmptyListFile(getProjectsFilePath())
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	var projects []Project
-	err := utils.ReadFromFile(&projects, getProjectsFilePath())
+	err := fileutil.ReadFromFile(&projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +47,7 @@ func GetProjects() ([]Project, error) {
 			return nil, errors.New("both Name and Path fields are required.")
 		}
 
-		exists := utils.Exists(projects[i].Path)
+		exists := fileutil.Exists(projects[i].Path)
 		if !exists {
 			return nil, errors.New(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
 		}
@@ -54,10 +55,10 @@ func GetProjects() ([]Project, error) {
 	return projects, err
 }
 
-// SaveProject fetches the projects from the disk, appends the project given as the parameter at the given index, then saves the new projects on the disk.
+// Save fetches the projects from the disk, appends the project given as the parameter at the given index, then saves the new projects on the disk.
 // If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
-func SaveProject(index int, project Project) ([]Project, error) {
-	onDiskProjects, err := GetProjects()
+func Save(index int, project Project) ([]Project, error) {
+	onDiskProjects, err := GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +76,7 @@ func SaveProject(index int, project Project) ([]Project, error) {
 		projects = append(projects, onDiskProjects[index+1:]...)
 	}
 
-	err = utils.SaveToFile(projects, getProjectsFilePath())
+	err = fileutil.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -83,10 +84,10 @@ func SaveProject(index int, project Project) ([]Project, error) {
 	return projects, nil
 }
 
-// EditProject edit the project list on-disk.
+// Update edit the project list on-disk.
 // If the index is not found, an error is returned as the second parameter
-func UpdateProject(index int, project Project) ([]Project, error) {
-	projects, err := GetProjects()
+func Update(index int, project Project) ([]Project, error) {
+	projects, err := GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +98,7 @@ func UpdateProject(index int, project Project) ([]Project, error) {
 
 	projects[index] = project
 
-	err = utils.SaveToFile(projects, getProjectsFilePath())
+	err = fileutil.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -105,10 +106,10 @@ func UpdateProject(index int, project Project) ([]Project, error) {
 	return projects, nil
 }
 
-// DeleteProject fetches the projects from the disk by index, checks it's the same as the in-memory project, then deletes it from the disk.
+// Delete fetches the projects from the disk by index, checks it's the same as the in-memory project, then deletes it from the disk.
 // If no error is encountered, it returns the newly updated projects list. Else it returns the error as the second return value.
-func DeleteProject(index int, project Project) ([]Project, error) {
-	projects, err := GetProjects()
+func Delete(index int, project Project) ([]Project, error) {
+	projects, err := GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +125,7 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 
 	projects = append(projects[:index], projects[index+1:]...)
 
-	err = utils.SaveToFile(projects, getProjectsFilePath())
+	err = fileutil.SaveToFile(projects, getProjectsFilePath())
 	if err != nil {
 		return nil, err
 	}
@@ -132,10 +133,10 @@ func DeleteProject(index int, project Project) ([]Project, error) {
 	return projects, nil
 }
 
-// SwapProjectIndex fetches the projects from the disk, swap both projects by index then saves the updated list.
+// SwapIndex fetches the projects from the disk, swap both projects by index then saves the updated list.
 // Returns the updated list if no error occurs. Forwards the error otherwise.
-func SwapProjectIndex(initialIndex int, targetIndex int) ([]Project, error) {
-	projects, err := GetProjects()
+func SwapIndex(initialIndex int, targetIndex int) ([]Project, error) {
+	projects, err := GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +155,7 @@ func SwapProjectIndex(initialIndex int, targetIndex int) ([]Project, error) {
 	projects[initialIndex] = projects[targetIndex]
 	projects[targetIndex] = p
 
-	err = utils.SaveToFile(projects, getProjectsFilePath())
+	err = fileutil.SaveToFile(projects, getProjectsFilePath())
 
 	return projects, nil
 }

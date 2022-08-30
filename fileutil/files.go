@@ -1,5 +1,5 @@
-// Package files utils implements helper function to work with the file system
-package utils
+// Package fileutil implements helper function to work with the file system
+package fileutil
 
 import (
 	"encoding/json"
