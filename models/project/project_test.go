@@ -1,9 +1,8 @@
-package project_test
+package project
 
 import (
 	"io/ioutil"
-	models "list-my-projects/models"
-	"list-my-projects/utils"
+	"list-my-projects/models/config"
 
 	"os"
 	"testing"
@@ -13,28 +12,30 @@ import (
 
 func TestMain(m *testing.M) {
 	// setup
-	os.Remove(utils.GetFullProjectsFilePath())
+	os.Remove(getProjectsFilePath())
 
 	code := m.Run()
 
 	// teardown
-	os.Remove(utils.GetFullProjectsFilePath())
+	os.Remove(getProjectsFilePath())
+	os.Remove(config.GetInstance().ConfigPath)
 
 	os.Exit(code)
 }
-func TestGetProjects(t *testing.T) {
+
+func Test_GetProjects(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
 
-		expectedData []models.Project
+		expectedData []Project
 		expectErr    bool
 	}{
 		{
 			testName:        "empty list",
 			initialDiskData: "[]",
 
-			expectedData: []models.Project{},
+			expectedData: []Project{},
 			expectErr:    false,
 		},
 		{
@@ -48,7 +49,7 @@ func TestGetProjects(t *testing.T) {
 			]
 			`,
 
-			expectedData: []models.Project{
+			expectedData: []Project{
 				{Name: "example-project", Path: "./"},
 			},
 			expectErr: false,
@@ -68,7 +69,7 @@ func TestGetProjects(t *testing.T) {
 			]
 			`,
 
-			expectedData: []models.Project{
+			expectedData: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
 			},
@@ -99,7 +100,7 @@ func TestGetProjects(t *testing.T) {
 			]
 			`,
 
-			expectedData: []models.Project{
+			expectedData: []Project{
 				{Name: "example-project", Path: "~"},
 			},
 			expectErr: false,
@@ -136,7 +137,7 @@ func TestGetProjects(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.GetProjects()
+			p, err := GetAll()
 
 			assert.Equal(t, testRun.expectedData, p)
 			if testRun.expectErr {
@@ -148,23 +149,23 @@ func TestGetProjects(t *testing.T) {
 	}
 }
 
-func TestSaveProject(t *testing.T) {
+func Test_SaveProject(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
 		index           int
-		project         models.Project
+		project         Project
 
-		expectedProjects []models.Project
+		expectedProjects []Project
 		expectErr        bool
 	}{
 		{
 			testName:        "save project into empty list",
 			initialDiskData: "[]",
-			project:         models.Project{Name: "example-project", Path: "./"},
+			project:         Project{Name: "example-project", Path: "./"},
 			index:           0,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project", Path: "./"},
 			},
 			expectErr: false,
@@ -179,10 +180,10 @@ func TestSaveProject(t *testing.T) {
 				}
 			]
 			`,
-			project: models.Project{Name: "example-project-2", Path: "./"},
+			project: Project{Name: "example-project-2", Path: "./"},
 			index:   0,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
 			},
@@ -202,10 +203,10 @@ func TestSaveProject(t *testing.T) {
 				}
 			]
 			`,
-			project: models.Project{Name: "example-project-3", Path: "./"},
+			project: Project{Name: "example-project-3", Path: "./"},
 			index:   1,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
 				{Name: "example-project-3", Path: "./"},
@@ -226,7 +227,7 @@ func TestSaveProject(t *testing.T) {
 				}
 			]
 			`,
-			project: models.Project{Name: "example-project-3", Path: "./"},
+			project: Project{Name: "example-project-3", Path: "./"},
 			index:   2,
 
 			expectedProjects: nil,
@@ -235,7 +236,7 @@ func TestSaveProject(t *testing.T) {
 		{
 			testName:        "negative index with empty list",
 			initialDiskData: "[]",
-			project:         models.Project{Name: "example-project-1", Path: "./"},
+			project:         Project{Name: "example-project-1", Path: "./"},
 			index:           -1,
 
 			expectedProjects: nil,
@@ -255,7 +256,7 @@ func TestSaveProject(t *testing.T) {
 				}
 			]
 			`,
-			project: models.Project{Name: "example-project-1", Path: "./"},
+			project: Project{Name: "example-project-1", Path: "./"},
 			index:   -1,
 
 			expectedProjects: nil,
@@ -264,7 +265,7 @@ func TestSaveProject(t *testing.T) {
 		{
 			testName:        "save into invalid list",
 			initialDiskData: "[{}]",
-			project:         models.Project{Name: "example-project-2", Path: "./"},
+			project:         Project{Name: "example-project-2", Path: "./"},
 			index:           0,
 
 			expectedProjects: nil,
@@ -276,7 +277,7 @@ func TestSaveProject(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.SaveProject(testRun.index, testRun.project)
+			p, err := Save(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
@@ -288,14 +289,14 @@ func TestSaveProject(t *testing.T) {
 	}
 }
 
-func TestUpdateProject(t *testing.T) {
+func Test_UpdateProject(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
 		index           int
-		project         models.Project
+		project         Project
 
-		expectedProjects []models.Project
+		expectedProjects []Project
 		expectErr        bool
 	}{
 		{
@@ -309,9 +310,9 @@ func TestUpdateProject(t *testing.T) {
 			]
 			`,
 			index:   0,
-			project: models.Project{Name: "example-project-2", Path: "./"},
+			project: Project{Name: "example-project-2", Path: "./"},
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-2", Path: "./"},
 			},
 			expectErr: false,
@@ -331,9 +332,9 @@ func TestUpdateProject(t *testing.T) {
 			]
 			`,
 			index:   1,
-			project: models.Project{Name: "example-project-3", Path: "./"},
+			project: Project{Name: "example-project-3", Path: "./"},
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-3", Path: "./"},
 			},
@@ -343,7 +344,7 @@ func TestUpdateProject(t *testing.T) {
 			testName:        "out of bound from empty list on-disk",
 			initialDiskData: "[]",
 			index:           0,
-			project:         models.Project{Name: "example-project-1", Path: "./"},
+			project:         Project{Name: "example-project-1", Path: "./"},
 
 			expectedProjects: nil,
 			expectErr:        true,
@@ -359,7 +360,7 @@ func TestUpdateProject(t *testing.T) {
 			]
 			`,
 			index:   1,
-			project: models.Project{Name: "example-project-1", Path: "./"},
+			project: Project{Name: "example-project-1", Path: "./"},
 
 			expectedProjects: nil,
 			expectErr:        true,
@@ -379,7 +380,7 @@ func TestUpdateProject(t *testing.T) {
 			]
 			`,
 			index:   3,
-			project: models.Project{Name: "example-project-1", Path: "./"},
+			project: Project{Name: "example-project-1", Path: "./"},
 
 			expectedProjects: nil,
 			expectErr:        true,
@@ -390,7 +391,7 @@ func TestUpdateProject(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.UpdateProject(testRun.index, testRun.project)
+			p, err := Update(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
@@ -402,14 +403,14 @@ func TestUpdateProject(t *testing.T) {
 	}
 }
 
-func TestDeleteProject(t *testing.T) {
+func Test_DeleteProject(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
 		index           int
-		project         models.Project
+		project         Project
 
-		expectedProjects []models.Project
+		expectedProjects []Project
 		expectErr        bool
 	}{
 		{
@@ -423,9 +424,9 @@ func TestDeleteProject(t *testing.T) {
 			]
 			`,
 			index:   0,
-			project: models.Project{Name: "example-project-1", Path: "./"},
+			project: Project{Name: "example-project-1", Path: "./"},
 
-			expectedProjects: []models.Project{},
+			expectedProjects: []Project{},
 			expectErr:        false,
 		},
 		{
@@ -443,9 +444,9 @@ func TestDeleteProject(t *testing.T) {
 			]
 			`,
 			index:   0,
-			project: models.Project{Name: "example-project-1", Path: "./"},
+			project: Project{Name: "example-project-1", Path: "./"},
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-2", Path: "./"},
 			},
 			expectErr: false,
@@ -469,9 +470,9 @@ func TestDeleteProject(t *testing.T) {
 			]
 			`,
 			index:   2,
-			project: models.Project{Name: "example-project-3", Path: "./"},
+			project: Project{Name: "example-project-3", Path: "./"},
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
 			},
@@ -492,7 +493,7 @@ func TestDeleteProject(t *testing.T) {
 			]
 			`,
 			index:   2,
-			project: models.Project{Name: "example-project-2", Path: "./"},
+			project: Project{Name: "example-project-2", Path: "./"},
 
 			expectedProjects: nil,
 			expectErr:        true,
@@ -512,7 +513,7 @@ func TestDeleteProject(t *testing.T) {
 			]
 			`,
 			index:   0,
-			project: models.Project{Name: "example-project-2", Path: "./"},
+			project: Project{Name: "example-project-2", Path: "./"},
 
 			expectedProjects: nil,
 			expectErr:        true,
@@ -523,7 +524,7 @@ func TestDeleteProject(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.DeleteProject(testRun.index, testRun.project)
+			p, err := Delete(testRun.index, testRun.project)
 
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
@@ -535,14 +536,14 @@ func TestDeleteProject(t *testing.T) {
 	}
 }
 
-func TestSwapIndex(t *testing.T) {
+func Test_SwapIndex(t *testing.T) {
 	testRuns := []struct {
 		testName        string
 		initialDiskData string
 		initialIndex    int
 		targetIndex     int
 
-		expectedProjects []models.Project
+		expectedProjects []Project
 		expectErr        bool
 	}{
 		{
@@ -558,7 +559,7 @@ func TestSwapIndex(t *testing.T) {
 			initialIndex: 0,
 			targetIndex:  0,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 			},
 			expectErr: false,
@@ -580,7 +581,7 @@ func TestSwapIndex(t *testing.T) {
 			initialIndex: 0,
 			targetIndex:  1,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-2", Path: "./"},
 				{Name: "example-project-1", Path: "./"},
 			},
@@ -607,7 +608,7 @@ func TestSwapIndex(t *testing.T) {
 			initialIndex: 1,
 			targetIndex:  2,
 
-			expectedProjects: []models.Project{
+			expectedProjects: []Project{
 				{Name: "example-project-1", Path: "./"},
 				{Name: "example-project-3", Path: "./"},
 				{Name: "example-project-2", Path: "./"},
@@ -696,7 +697,7 @@ func TestSwapIndex(t *testing.T) {
 		t.Run(testRun.testName, func(t *testing.T) {
 			saveStringToFile(testRun.initialDiskData)
 
-			p, err := models.SwapProjectIndex(testRun.initialIndex, testRun.targetIndex)
+			p, err := SwapIndex(testRun.initialIndex, testRun.targetIndex)
 			assert.Equal(t, testRun.expectedProjects, p)
 			if testRun.expectErr {
 				assert.NotNil(t, err)
@@ -708,5 +709,9 @@ func TestSwapIndex(t *testing.T) {
 }
 
 func saveStringToFile(data string) error {
-	return ioutil.WriteFile(utils.GetFullProjectsFilePath(), []byte(data), os.ModePerm)
+	return ioutil.WriteFile(getProjectsFilePath(), []byte(data), os.ModePerm)
+}
+
+func getTestProjectsFilePath() string {
+	return config.GetInstance().ProjectsPath
 }

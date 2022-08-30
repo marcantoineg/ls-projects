@@ -3,7 +3,7 @@ package components
 import (
 	"errors"
 	"fmt"
-	models "list-my-projects/models"
+	"list-my-projects/models/project"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"
@@ -44,7 +44,7 @@ type projectFormModel struct {
 	isEditMode        bool
 }
 
-func NewProjectForm(l *listSelectorModel, project *models.Project) projectFormModel {
+func NewProjectForm(l *listSelectorModel, project *project.Project) projectFormModel {
 	m := projectFormModel{
 		inputs:            make([]textinput.Model, 2),
 		listSelectorModel: l,
@@ -110,7 +110,7 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				}
 
-				p := &models.Project{
+				p := &project.Project{
 					Name: m.inputs[0].Value(),
 					Path: m.inputs[1].Value(),
 				}
@@ -215,10 +215,10 @@ func validateTextField(v string) error {
 
 type noProjectCreatedMsg struct{}
 type projectCreatedMsg struct {
-	project models.Project
+	project project.Project
 }
 type projectCreationErrorMsg error
 type projectUpdatedMsg struct {
-	project models.Project
+	project project.Project
 }
 type projectUpdateErrorMsg error
