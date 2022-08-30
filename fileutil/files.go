@@ -1,4 +1,4 @@
-// Package fileutil implements helper function to work with the file system
+// Package fileutil implements helper function to work with the file system.
 package fileutil
 
 import (
@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 )
 
-// SaveToFile encodes to JSON a list of items then saves it to a specified file.
-func SaveToFile[T any](items T, filePath string) error {
-	v, err := json.MarshalIndent(items, "", "  ")
+// SaveToFile encodes to JSON an object then saves it to a specified file.
+func SaveToFile[T any](data T, filePath string) error {
+	v, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
 		return err
 	}
@@ -21,7 +21,8 @@ func SaveToFile[T any](items T, filePath string) error {
 	return err
 }
 
-// ReadFromFile tries to open the file at the given file path and returns all its content.
+// ReadFromFile tries to open the file at the given file path and returns all its content unmarshalled into the data parameter.
+// If an error occurs, it is forwarded to the return value.
 func ReadFromFile[T any](data *T, filePath string) error {
 	file, err := os.Open(ReplaceTilde(filePath))
 	if err != nil {
@@ -42,18 +43,21 @@ func ReadFromFile[T any](data *T, filePath string) error {
 	return nil
 }
 
-// CreateEmptyListFile creates the required directories and file containing an empty list.
+// CreateEmptyFile creates the required directories and file. An empty string overwrites the content of the file.
+// If an error occurs, it is forwarded to the return value.
 func CreateEmptyFile(filePath string) error {
 	return overwriteFileWithString(filePath, "")
 }
 
 // CreateEmptyListFile creates the required directories and file containing an empty list.
+// If an error occurs, it is forwarded to the return value.
 func CreateEmptyListFile(filePath string) error {
 	return overwriteFileWithString(filePath, "[]")
 }
 
 // overwriteFileWithString creates or overwrites an existing file with the data provided.
 // It also creates all required directory to the file if necessary.
+// If an error occurs, it is forwarded to the return value.
 func overwriteFileWithString(filePath string, data string) error {
 	dataDir := filepath.Dir(filePath)
 	err := os.MkdirAll(dataDir, os.ModePerm)
@@ -75,7 +79,7 @@ func overwriteFileWithString(filePath string, data string) error {
 	return nil
 }
 
-// ReplaceTilde returns a string with the tilde character replaced by the user's home directory
+// ReplaceTilde returns a string with the tilde character replaced by the user's home directory.
 func ReplaceTilde(filePath string) string {
 	var newString = filePath
 	if len(filePath) > 0 && filePath[0] == '~' {

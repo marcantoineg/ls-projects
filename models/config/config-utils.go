@@ -6,14 +6,12 @@ import (
 	"list-my-projects/fileutil"
 )
 
-var projectsPath, configPath *string
-
 func init() {
 	flag.String("config", "", "path to the config file")
 	flag.String("projects", "", "path to the projects file")
 }
 
-// initConfig parses cmd flags and loads the configuration accordingly.
+// initConfig parses command line flags and loads the configuration accordingly. If no config file is found, creates it.
 // Returns the config or panics.
 func initConfig() *Config {
 	flag.Parse()

@@ -1,4 +1,4 @@
-// todo
+// Package project implements functions required to create, load, edit and delete projects.
 package project
 
 import (

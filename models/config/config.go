@@ -1,4 +1,4 @@
-// todo
+// Package config implements functions required to create, load and edit a config.
 package config
 
 import "list-my-projects/fileutil"
@@ -11,7 +11,7 @@ const (
 	testConfigFilePath   = "../../tests/test.config.json"
 )
 
-// Config represents the app's configuration.
+// Config represents the app's configuration on-disk as well as in memory.
 type Config struct {
 	// absolute path to the projects list file
 	ProjectsPath string `json:"projectsPath"`
