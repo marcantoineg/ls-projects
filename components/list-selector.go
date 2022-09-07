@@ -5,6 +5,7 @@ import (
 	"os/exec"
 
 	"list-my-projects/fileutil"
+	"list-my-projects/models/config"
 	"list-my-projects/models/project"
 
 	"github.com/atotto/clipboard"
@@ -195,7 +196,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			selectedItem := m.list.SelectedItem().(project.Project)
 			m.choice = &selectedItem
 
-			cmd := exec.Command("code", "-n", ".")
+			cmd := exec.Command(getConfig().ProjectSelectionCommand, getConfig().ProjectSelectionArgs...)
 			cmd.Dir = fileutil.ReplaceTilde(m.choice.Path)
 
 			err := cmd.Run()
@@ -322,6 +323,10 @@ func disableMovingMode(m *listSelectorModel) {
 	m.movingModeActive = false
 	m.list.SetDelegate(itemDelegate{movingModeInitialIndex: -1})
 	resetListTitle(m)
+}
+
+func getConfig() config.Config {
+	return config.GetInstance()
 }
 
 type fatalErrorMsg struct {
