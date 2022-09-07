@@ -15,9 +15,12 @@ const (
 type Config struct {
 	// absolute path to the projects list file
 	ProjectsPath string `json:"projectsPath"`
-
 	// absolute path to the config file
 	ConfigPath string `json:"configPath"`
+	// the command that is executed when a project is selected in the list-selectore.
+	ProjectSelectionCommand string `json:"projectSelectionCommand"`
+	// list arguments to be passed to the command when a project is selected.
+	ProjectSelectionArgs []string `json:"projectSelectionArgs"`
 }
 
 // saveToDisk saves the config to the file
