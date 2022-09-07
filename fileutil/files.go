@@ -17,7 +17,7 @@ func SaveToFile[T any](data T, filePath string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(filePath, v, os.ModePerm)
+	err = ioutil.WriteFile(ReplaceTilde(filePath), v, os.ModePerm)
 	return err
 }
 
@@ -59,6 +59,8 @@ func CreateEmptyListFile(filePath string) error {
 // It also creates all required directory to the file if necessary.
 // If an error occurs, it is forwarded to the return value.
 func overwriteFileWithString(filePath string, data string) error {
+	filePath = ReplaceTilde(filePath)
+
 	dataDir := filepath.Dir(filePath)
 	err := os.MkdirAll(dataDir, os.ModePerm)
 	if err != nil {
