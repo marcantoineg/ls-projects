@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 
+	"list-my-projects/components/styles"
 	"list-my-projects/fileutil"
 	"list-my-projects/models/project"
 
@@ -11,50 +12,6 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-)
-
-const (
-	listHeight   = 14
-	listWidth    = 20
-	initialTitle = "Navigate to ...?"
-)
-
-var (
-	titleStyle = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(lipgloss.Color("#FFFDF5")).
-			Background(lipgloss.Color("#6C91BF")).
-			MarginLeft(2).
-			Padding(0, 1)
-
-	successTitleStyle = titleStyle.Copy().
-				Background(lipgloss.Color("#25A065"))
-
-	errorTitleStyle = titleStyle.Copy().
-			Background(lipgloss.Color("#E84855"))
-
-	movingModeTitleStyle = titleStyle.Copy().
-				Background(lipgloss.Color("#4d4d4d"))
-
-	noItemsStyle = list.DefaultStyles().NoItems.
-			MarginLeft(4)
-
-	paginationStyle = list.DefaultStyles().PaginationStyle.
-			PaddingLeft(4)
-
-	helpStyle = list.DefaultStyles().HelpStyle.
-			PaddingLeft(4).
-			PaddingBottom(1)
-
-	quitTextStyle = lipgloss.NewStyle().
-			Margin(1, 2)
-
-	fatalErrorStyle = quitTextStyle.Copy().
-			Foreground(lipgloss.Color("#E84855"))
-
-	pathTextStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("170"))
 )
 
 type listSelectorModel struct {
@@ -69,16 +26,16 @@ type listSelectorModel struct {
 }
 
 func NewListSelector() tea.Model {
-	l := list.New([]list.Item{}, itemDelegate{movingModeInitialIndex: -1}, listWidth, listHeight)
+	l := list.New([]list.Item{}, itemDelegate{movingModeInitialIndex: -1}, styles.ListWidth, styles.ListHeight)
 
-	l.Title = initialTitle
+	l.Title = styles.ListInitialTitle
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(false)
 
-	l.Styles.Title = titleStyle
-	l.Styles.NoItems = noItemsStyle
-	l.Styles.PaginationStyle = paginationStyle
-	l.Styles.HelpStyle = helpStyle
+	l.Styles.Title = styles.ListSelector.TitleStyle
+	l.Styles.NoItems = styles.ListSelector.NoItemsStyle
+	l.Styles.PaginationStyle = styles.ListSelector.PaginationStyle
+	l.Styles.HelpStyle = styles.ListSelector.HelpStyle
 
 	l.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{
@@ -132,7 +89,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.items = castToListItem(projects)
 		m.list.SetItems(m.items)
 
-		m.list.Styles.Title = successTitleStyle
+		m.list.Styles.Title = styles.ListSelector.SuccessTitleStyle
 		m.list.Title = fmt.Sprintf("project '%s' added!", msg.project.Name)
 
 		m.projectForm = nil
@@ -147,7 +104,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.items = castToListItem(projects)
 		m.list.SetItems(m.items)
 
-		m.list.Styles.Title = successTitleStyle
+		m.list.Styles.Title = styles.ListSelector.SuccessTitleStyle
 		m.list.Title = fmt.Sprintf("project '%s' updated!", msg.project.Name)
 
 		m.projectForm = nil
@@ -157,7 +114,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.projectForm = nil
 
 	case projectCreationErrorMsg:
-		m.list.Styles.Title = errorTitleStyle
+		m.list.Styles.Title = styles.ListSelector.ErrorTitleStyle
 		m.list.Title = msg.Error()
 
 		m.projectForm = nil
@@ -240,14 +197,14 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			if p, ok := m.list.SelectedItem().(project.Project); ok {
 				projects, err := project.Delete(m.list.Index(), p)
 				if err != nil {
-					m.list.Styles.Title = errorTitleStyle
+					m.list.Styles.Title = styles.ListSelector.ErrorTitleStyle
 					m.list.Title = fmt.Sprintf("error deleting project '%s'", p.Name)
 				}
 
 				m.items = castToListItem(projects)
 				cmd := m.list.SetItems(m.items)
 
-				m.list.Styles.Title = successTitleStyle
+				m.list.Styles.Title = styles.ListSelector.SuccessTitleStyle
 				m.list.Title = fmt.Sprintf("project '%s' deleted", p.Name)
 
 				return m, cmd
@@ -259,7 +216,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			if p, ok := m.list.SelectedItem().(project.Project); ok {
 				clipboard.WriteAll(p.Path)
 
-				m.list.Styles.Title = successTitleStyle
+				m.list.Styles.Title = styles.ListSelector.SuccessTitleStyle
 				m.list.Title = fmt.Sprintf("path for project '%s' copied", p.Name)
 
 				return m, nil
@@ -271,7 +228,7 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.list.SetDelegate(itemDelegate{movingModeInitialIndex: m.movingModeInitialIndex})
 		m.movingModeActive = true
 
-		m.list.Styles.Title = movingModeTitleStyle
+		m.list.Styles.Title = styles.ListSelector.MovingModeTitleStyle
 		m.list.Title = "select another project to swap position"
 
 	}
@@ -283,15 +240,19 @@ func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 func (m listSelectorModel) View() string {
 	if m.fatalError != nil {
-		return fatalErrorStyle.Render(fmt.Sprintf("fatal error:\n\n%s", m.fatalError))
+		return styles.ListSelector.FatalErrorStyle.Render(
+			fmt.Sprintf("fatal error:\n\n%s", m.fatalError),
+		)
 	}
 
 	if m.choice != nil {
-		return quitTextStyle.Render(fmt.Sprintf("Opening %s 💻", pathTextStyle.Render(m.choice.Path)))
+		return styles.ListSelector.QuitTextStyle.Render(
+			fmt.Sprintf("Opening %s 💻", styles.ListSelector.PathTextStyle.Render(m.choice.Path)),
+		)
 	}
 
 	if m.quitting {
-		return quitTextStyle.Render("mmmhhhh-kay.")
+		return styles.ListSelector.QuitTextStyle.Render("mmmhhhh-kay.")
 	}
 
 	if m.projectForm != nil {
@@ -312,8 +273,8 @@ func castToListItem(projects []project.Project) []list.Item {
 
 // resetListTitle resets the initial style and text of the list's title.
 func resetListTitle(m *listSelectorModel) {
-	m.list.Styles.Title = titleStyle
-	m.list.Title = initialTitle
+	m.list.Styles.Title = styles.ListSelector.TitleStyle
+	m.list.Title = styles.ListInitialTitle
 }
 
 // disableMovingMode resets required value to disable the moving mode.
