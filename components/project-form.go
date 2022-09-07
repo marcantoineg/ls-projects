@@ -80,73 +80,9 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.err = msg
 
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c":
-			return m, tea.Quit
-
-		case "esc":
-			return m.listSelectorModel.Update(noProjectCreatedMsg{})
-
-		// Set focus to next input
-		case "tab", "shift+tab", "enter", "up", "down":
-			s := msg.String()
-
-			// Did the user press enter or space while the submit button was focused?
-			// If so, create the project and exit to the list-selector component.
-			if (s == "enter" || s == "space") && m.focusIndex == len(m.inputs) {
-				for i := range m.inputs {
-					err := m.inputs[i].Validate(m.inputs[i].Value())
-					if err != nil {
-						return m.Update(projectCreationErrorMsg(err))
-					}
-				}
-
-				p := &project.Project{
-					Name: m.inputs[0].Value(),
-					Path: m.inputs[1].Value(),
-				}
-
-				if valid := p.ValidatePath(); valid {
-					var msg tea.Msg
-					if m.isEditMode {
-						msg = projectUpdatedMsg{*p}
-					} else {
-						msg = projectCreatedMsg{*p}
-					}
-					return m.listSelectorModel.Update(msg)
-				} else {
-					return m.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
-				}
-			}
-
-			// Cycle indexes
-			if s == "up" || s == "shift+tab" {
-				m.focusIndex--
-			} else {
-				m.focusIndex++
-			}
-
-			if m.focusIndex > len(m.inputs) {
-				m.focusIndex = 0
-			} else if m.focusIndex < 0 {
-				m.focusIndex = len(m.inputs)
-			}
-
-			cmds := make([]tea.Cmd, len(m.inputs))
-			for i := 0; i <= len(m.inputs)-1; i++ {
-				if i == m.focusIndex {
-					cmds[i] = m.inputs[i].Focus()
-					m.inputs[i].PromptStyle = focusedStyle(m)
-					m.inputs[i].TextStyle = focusedStyle(m)
-					continue
-				}
-				// Remove focused state
-				m.inputs[i].Blur()
-				m.inputs[i].PromptStyle = styles.Form.NoStyle
-				m.inputs[i].TextStyle = styles.Form.NoStyle
-			}
-
-			return m, tea.Batch(cmds...)
+		tmpModel, tempCmd := handleFormKeybinds(&m, msg)
+		if tmpModel != nil {
+			return tmpModel, tempCmd
 		}
 	}
 
@@ -154,6 +90,79 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	cmd := m.updateInputs(msg)
 
 	return m, cmd
+}
+
+func handleFormKeybinds(m *projectFormModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "ctrl+c":
+		return m, tea.Quit
+
+	case "esc":
+		return m.listSelectorModel.Update(noProjectCreatedMsg{})
+
+	// Set focus to next input
+	case "tab", "shift+tab", "enter", "up", "down":
+		s := msg.String()
+
+		// Did the user press enter or space while the submit button was focused?
+		// If so, create the project and exit to the list-selector component.
+		if (s == "enter" || s == "space") && m.focusIndex == len(m.inputs) {
+			for i := range m.inputs {
+				err := m.inputs[i].Validate(m.inputs[i].Value())
+				if err != nil {
+					return m.Update(projectCreationErrorMsg(err))
+				}
+			}
+
+			p := &project.Project{
+				Name: m.inputs[0].Value(),
+				Path: m.inputs[1].Value(),
+			}
+
+			if valid := p.ValidatePath(); valid {
+				var msg tea.Msg
+				if m.isEditMode {
+					msg = projectUpdatedMsg{*p}
+				} else {
+					msg = projectCreatedMsg{*p}
+				}
+				return m.listSelectorModel.Update(msg)
+			} else {
+				return m.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
+			}
+		}
+
+		// Cycle indexes
+		if s == "up" || s == "shift+tab" {
+			m.focusIndex--
+		} else {
+			m.focusIndex++
+		}
+
+		if m.focusIndex > len(m.inputs) {
+			m.focusIndex = 0
+		} else if m.focusIndex < 0 {
+			m.focusIndex = len(m.inputs)
+		}
+
+		cmds := make([]tea.Cmd, len(m.inputs))
+		for i := 0; i <= len(m.inputs)-1; i++ {
+			if i == m.focusIndex {
+				cmds[i] = m.inputs[i].Focus()
+				m.inputs[i].PromptStyle = focusedStyle(*m)
+				m.inputs[i].TextStyle = focusedStyle(*m)
+				continue
+			}
+			// Remove focused state
+			m.inputs[i].Blur()
+			m.inputs[i].PromptStyle = styles.Form.NoStyle
+			m.inputs[i].TextStyle = styles.Form.NoStyle
+		}
+
+		return m, tea.Batch(cmds...)
+	}
+
+	return nil, nil
 }
 
 func (m *projectFormModel) updateInputs(msg tea.Msg) tea.Cmd {

@@ -122,7 +122,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	// Keybinding
 	case tea.KeyMsg:
-		return handleKeyMsg(&m, msg)
+		return handleListkeybinds(&m, msg)
 	}
 
 	m.list, cmd = m.list.Update(msg)
@@ -130,7 +130,7 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 // handleKeyMsg handles the keybinding part of the Update function.
-func handleKeyMsg(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+func handleListkeybinds(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
 	case "ctrl+c", "q", "esc":
 		if m.movingModeActive {
