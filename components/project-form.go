@@ -177,10 +177,10 @@ func (m projectFormModel) View() string {
 		title = m.err.Error()
 		style = styles.Form.ErrorTitleStyle
 	} else if m.isEditMode {
-		title = styles.Form.EditProjectTitleStyle.Render("Edit project")
+		title = "Edit project"
 		style = styles.Form.EditProjectTitleStyle
 	} else {
-		title = styles.Form.NewProjectTitleStyle.Render("Add new project")
+		title = "Add new project"
 		style = styles.Form.NewProjectTitleStyle
 	}
 	fmt.Fprintf(&b, "\n%s\n\n", style.Render(title))
