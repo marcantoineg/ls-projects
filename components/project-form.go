@@ -3,6 +3,7 @@ package components
 import (
 	"errors"
 	"fmt"
+	"list-my-projects/components/styles"
 	"list-my-projects/models/project"
 	"strings"
 
@@ -11,25 +12,11 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	newProjectTitleStyle  = titleStyle.Copy().MarginLeft(0)
-	editProjectTitleStyle = newProjectTitleStyle.Copy().Background(lipgloss.Color("#DDB771")).Foreground(lipgloss.Color("#000000"))
-	newFocusedStyle       = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
-	editFocusedStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("#DDB771"))
-	blurredStyle          = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	noStyle               = lipgloss.NewStyle()
-	cursorModeHelpStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF"))
-	formHelpStyle         = blurredStyle.Copy().Italic(true).Faint(true)
-	marginStyle           = lipgloss.NewStyle().MarginLeft(4)
-
-	blurredButton = fmt.Sprintf("[ %s ]", blurredStyle.Render("Submit"))
-)
-
 func focusedStyle(m projectFormModel) lipgloss.Style {
 	if m.isEditMode {
-		return editFocusedStyle
+		return styles.Form.EditFocusedStyle
 	} else {
-		return newFocusedStyle
+		return styles.Form.NewFocusedStyle
 	}
 }
 
@@ -42,6 +29,7 @@ type projectFormModel struct {
 	inputs            []textinput.Model
 	listSelectorModel *listSelectorModel
 	isEditMode        bool
+	err               error
 }
 
 func NewProjectForm(l *listSelectorModel, project *project.Project) projectFormModel {
@@ -88,6 +76,9 @@ func (m projectFormModel) Init() tea.Cmd {
 
 func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case projectCreationErrorMsg:
+		m.err = msg
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c":
@@ -106,7 +97,7 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				for i := range m.inputs {
 					err := m.inputs[i].Validate(m.inputs[i].Value())
 					if err != nil {
-						return m.listSelectorModel.Update(projectCreationErrorMsg(err))
+						return m.Update(projectCreationErrorMsg(err))
 					}
 				}
 
@@ -124,7 +115,7 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 					return m.listSelectorModel.Update(msg)
 				} else {
-					return m.listSelectorModel.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
+					return m.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
 				}
 			}
 
@@ -151,8 +142,8 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				// Remove focused state
 				m.inputs[i].Blur()
-				m.inputs[i].PromptStyle = noStyle
-				m.inputs[i].TextStyle = noStyle
+				m.inputs[i].PromptStyle = styles.Form.NoStyle
+				m.inputs[i].TextStyle = styles.Form.NoStyle
 			}
 
 			return m, tea.Batch(cmds...)
@@ -181,12 +172,18 @@ func (m projectFormModel) View() string {
 	var b strings.Builder
 
 	var title string
-	if m.isEditMode {
-		title = editProjectTitleStyle.Render("Edit project")
+	var style lipgloss.Style
+	if m.err != nil {
+		title = m.err.Error()
+		style = styles.Form.ErrorTitleStyle
+	} else if m.isEditMode {
+		title = "Edit project"
+		style = styles.Form.EditProjectTitleStyle
 	} else {
-		title = newProjectTitleStyle.Render("Add new project")
+		title = "Add new project"
+		style = styles.Form.NewProjectTitleStyle
 	}
-	fmt.Fprintf(&b, "\n%s\n\n", title)
+	fmt.Fprintf(&b, "\n%s\n\n", style.Render(title))
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())
@@ -195,15 +192,15 @@ func (m projectFormModel) View() string {
 		}
 	}
 
-	button := blurredButton
+	button := styles.Form.BlurredButton()
 	if m.focusIndex == len(m.inputs) {
 		button = focusedButton(m)
 	}
 	fmt.Fprintf(&b, "\n\n%s\n\n", button)
 
-	fmt.Fprintf(&b, "\n%s", formHelpStyle.Render("[*] marks required fields"))
+	fmt.Fprintf(&b, "\n%s", styles.Form.FormHelpStyle.Render("[*] marks required fields"))
 
-	return marginStyle.Render(b.String())
+	return styles.Form.MarginStyle.Render(b.String())
 }
 
 func validateTextField(v string) error {
