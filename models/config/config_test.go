@@ -33,20 +33,26 @@ func TestGetInstance(t *testing.T) {
 			initialConfigPtr: nil,
 
 			expectedConfig: Config{
-				ProjectsPath: defaultFullProjectsFilePath(),
-				ConfigPath:   defaultFullConfigPath(),
+				ProjectsPath:            defaultFullProjectsFilePath(),
+				ConfigPath:              defaultFullConfigPath(),
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 		},
 		{
 			testName: "GetInstance with initial internal config",
 			initialConfigPtr: &Config{
-				ProjectsPath: "./",
-				ConfigPath:   "./",
+				ProjectsPath:            "./",
+				ConfigPath:              "./",
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 
 			expectedConfig: Config{
-				ProjectsPath: "./",
-				ConfigPath:   "./",
+				ProjectsPath:            "./",
+				ConfigPath:              "./",
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 		},
 	}
@@ -77,8 +83,10 @@ func Test_initConfig(t *testing.T) {
 			initialConfigFileData: "",
 
 			expectedConfig: Config{
-				ConfigPath:   testConfigFilePath,
-				ProjectsPath: testProjectsFilePath,
+				ConfigPath:              defaultFullConfigPath(),
+				ProjectsPath:            defaultFullProjectsFilePath(),
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 			expectPanic: false,
 		},
@@ -94,13 +102,16 @@ func Test_initConfig(t *testing.T) {
 			initialConfigFileData: `
 			{
 				"configPath": "some-custom-path",
-				"projectsPath": "some-custom-path-2"
+				"projectsPath": "some-custom-path-2",
+				"projectSelectionCommand": "cd"
 			}
 			`,
 
 			expectedConfig: Config{
-				ConfigPath:   "some-custom-path",
-				ProjectsPath: "some-custom-path-2",
+				ConfigPath:              "some-custom-path",
+				ProjectsPath:            "some-custom-path-2",
+				ProjectSelectionCommand: "cd",
+				ProjectSelectionArgs:    []string(nil),
 			},
 			expectPanic: false,
 		},
@@ -109,14 +120,17 @@ func Test_initConfig(t *testing.T) {
 			initialConfigFileData: `
 			{
 				"configPath": "some-custom-path",
-				"projectsPath": "some-custom-path-2"
+				"projectsPath": "some-custom-path-2",
+				"projectSelectionCommand": "cd"
 			}
 			`,
 			configFlag: "./tests/config.json",
 
 			expectedConfig: Config{
-				ConfigPath:   "some-custom-path",
-				ProjectsPath: "some-custom-path-2",
+				ConfigPath:              "some-custom-path",
+				ProjectsPath:            "some-custom-path-2",
+				ProjectSelectionCommand: "cd",
+				ProjectSelectionArgs:    []string(nil),
 			},
 			expectPanic: false,
 		},
@@ -126,8 +140,10 @@ func Test_initConfig(t *testing.T) {
 			projectsFlag:          "./tests/projects.json",
 
 			expectedConfig: Config{
-				ConfigPath:   defaultFullConfigPath(),
-				ProjectsPath: "./tests/projects.json",
+				ConfigPath:              defaultFullConfigPath(),
+				ProjectsPath:            "./tests/projects.json",
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 			expectPanic: false,
 		},
@@ -138,8 +154,10 @@ func Test_initConfig(t *testing.T) {
 			projectsFlag:          "./tests/projects.json",
 
 			expectedConfig: Config{
-				ConfigPath:   "./tests/config.json",
-				ProjectsPath: "./tests/projects.json",
+				ConfigPath:              "./tests/config.json",
+				ProjectsPath:            "./tests/projects.json",
+				ProjectSelectionCommand: defaultProjectSelectionCommand(),
+				ProjectSelectionArgs:    defaultProjectSelectionArgsSlice(),
 			},
 			expectPanic: false,
 		},
