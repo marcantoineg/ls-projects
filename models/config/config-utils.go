@@ -4,11 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"list-my-projects/fileutil"
+	"strings"
 )
 
 func init() {
 	flag.String("config", "", "path to the config file")
 	flag.String("projects", "", "path to the projects file")
+	flag.String("command", "", "command to exectute when a project gets selected")
+	flag.String("commandArgs", "", "Arguments for the command to exectute when a project gets selected")
 }
 
 // initConfig parses command line flags and loads the configuration accordingly. If no config file is found, creates it.
@@ -16,18 +19,10 @@ func init() {
 func initConfig() *Config {
 	flag.Parse()
 
-	var configPath = defaultFullConfigPath()
-	if f := flag.Lookup("config"); f != nil {
-		if value := f.Value.String(); value != "" {
-			configPath = f.Value.String()
-		}
-	}
-	var projectsPath = defaultFullProjectsFilePath()
-	if f := flag.Lookup("projects"); f != nil {
-		if value := f.Value.String(); value != "" {
-			projectsPath = f.Value.String()
-		}
-	}
+	configPath := getFlagValue(defaultFullConfigPath(), "config")
+	projectsPath := getFlagValue(defaultFullProjectsFilePath(), "projects")
+	commandName := getFlagValue(defaultProjectSelectionCommand(), "command")
+	commandAgs := getFlagValue(defaultProjectSelectionArgs(), "commandArgs")
 
 	if exists := fileutil.Exists(configPath); exists {
 		return readOnDiskConfig(configPath)
@@ -39,14 +34,25 @@ func initConfig() *Config {
 		}
 
 		newConfig := &Config{
-			ProjectsPath: projectsPath,
-			ConfigPath:   configPath,
+			ProjectsPath:            projectsPath,
+			ConfigPath:              configPath,
+			ProjectSelectionCommand: commandName,
+			ProjectSelectionArgs:    strings.Split(commandAgs, " "),
 		}
 
 		newConfig.saveToDisk()
 
 		return newConfig
 	}
+}
+
+func getFlagValue(defaultValue string, flagName string) string {
+	if f := flag.Lookup(flagName); f != nil {
+		if value := f.Value.String(); value != "" {
+			return f.Value.String()
+		}
+	}
+	return defaultValue
 }
 
 // readOnDiskConfig returns a pointer to a parsed Config from the disk.
@@ -58,8 +64,8 @@ func readOnDiskConfig(configPath string) *Config {
 	if err != nil {
 		fmt.Printf("error loading config file '%s'\n\n%s", configPath, err.Error())
 		panic(err)
-	} else if config.ConfigPath == "" || config.ProjectsPath == "" {
-		fmt.Println(fmt.Sprintf("config file '%s' must specify 'configPath' and 'projectsPath'", configPath))
+	} else if config.ConfigPath == "" || config.ProjectsPath == "" || config.ProjectSelectionCommand == "" {
+		fmt.Println(fmt.Sprintf("config file '%s' must specify 'configPath', 'projectsPath' and 'projectSelectionCommand'", configPath))
 		panic(err)
 	}
 
@@ -82,4 +88,16 @@ func defaultFullConfigPath() string {
 	} else {
 		return testConfigFilePath
 	}
+}
+
+func defaultProjectSelectionCommand() string {
+	return "code"
+}
+
+func defaultProjectSelectionArgs() string {
+	return "-n ."
+}
+
+func defaultProjectSelectionArgsSlice() []string {
+	return strings.Split(defaultProjectSelectionArgs(), " ")
 }
