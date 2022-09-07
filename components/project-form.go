@@ -29,6 +29,7 @@ type projectFormModel struct {
 	inputs            []textinput.Model
 	listSelectorModel *listSelectorModel
 	isEditMode        bool
+	err               error
 }
 
 func NewProjectForm(l *listSelectorModel, project *project.Project) projectFormModel {
@@ -75,6 +76,9 @@ func (m projectFormModel) Init() tea.Cmd {
 
 func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case projectCreationErrorMsg:
+		m.err = msg
+
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c":
@@ -93,7 +97,7 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				for i := range m.inputs {
 					err := m.inputs[i].Validate(m.inputs[i].Value())
 					if err != nil {
-						return m.listSelectorModel.Update(projectCreationErrorMsg(err))
+						return m.Update(projectCreationErrorMsg(err))
 					}
 				}
 
@@ -111,7 +115,7 @@ func (m projectFormModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 					return m.listSelectorModel.Update(msg)
 				} else {
-					return m.listSelectorModel.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
+					return m.Update(projectCreationErrorMsg(errors.New("project's path is invalid")))
 				}
 			}
 
@@ -168,12 +172,18 @@ func (m projectFormModel) View() string {
 	var b strings.Builder
 
 	var title string
-	if m.isEditMode {
+	var style lipgloss.Style
+	if m.err != nil {
+		title = m.err.Error()
+		style = styles.Form.ErrorTitleStyle
+	} else if m.isEditMode {
 		title = styles.Form.EditProjectTitleStyle.Render("Edit project")
+		style = styles.Form.EditProjectTitleStyle
 	} else {
 		title = styles.Form.NewProjectTitleStyle.Render("Add new project")
+		style = styles.Form.NewProjectTitleStyle
 	}
-	fmt.Fprintf(&b, "\n%s\n\n", title)
+	fmt.Fprintf(&b, "\n%s\n\n", style.Render(title))
 
 	for i := range m.inputs {
 		b.WriteString(m.inputs[i].View())

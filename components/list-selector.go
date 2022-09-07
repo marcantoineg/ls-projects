@@ -113,12 +113,6 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		resetListTitle(&m)
 		m.projectForm = nil
 
-	case projectCreationErrorMsg:
-		m.list.Styles.Title = styles.ListSelector.ErrorTitleStyle
-		m.list.Title = msg.Error()
-
-		m.projectForm = nil
-
 	case fatalErrorMsg:
 		m.fatalError = msg.err
 		m.projectForm = nil
