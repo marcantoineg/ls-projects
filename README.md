@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/16008095/208336763-22bec39c-6a44-4469-96bc-675b0f2e85de.png" align="right" width="35%" />
+<img src="https://user-images.githubusercontent.com/16008095/208336763-22bec39c-6a44-4469-96bc-675b0f2e85de.png" align="right" width="37%" />
 
 # 📚 list-my-projects
 ![ci badge](https://github.com/marcantoineg/list-my-projects/actions/workflows/ci.yml/badge.svg)
@@ -7,6 +7,8 @@
 A simple shell app to list projects and open them in a new window of VS Code.
 
 This app uses [Bubble Tea](https://github.com/charmbracelet/bubbletea/) as its UI framework.
+
+<br/>
 
 ## Configuration
 
