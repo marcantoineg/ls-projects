@@ -4,7 +4,7 @@
 ![ci badge](https://github.com/marcantoineg/list-my-projects/actions/workflows/ci.yml/badge.svg)
 <br><em><sub>without a meme, is it really a repo?</sub></em>
 
-A simple shell app to list projects and open them in a new window of VS Code.
+A simple Go app to list projects and open them in a new window of VS Code.
 
 This app uses [Bubble Tea](https://github.com/charmbracelet/bubbletea/) as its UI framework.
 
