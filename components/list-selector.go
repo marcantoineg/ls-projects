@@ -3,6 +3,7 @@ package components
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 
 	"list-my-projects/components/styles"
 	"list-my-projects/fileutil"
@@ -23,6 +24,8 @@ type listSelectorModel struct {
 	movingModeActive       bool
 	movingModeInitialIndex int
 	quitting               bool
+	searchInput            *searchInputModel
+	typingSearchTerm       bool
 }
 
 func NewListSelector() tea.Model {
@@ -37,6 +40,8 @@ func NewListSelector() tea.Model {
 	l.Styles.PaginationStyle = styles.ListSelector.PaginationStyle
 	l.Styles.HelpStyle = styles.ListSelector.HelpStyle
 
+	l.KeyMap.NextPage = key.NewBinding()
+	l.KeyMap.PrevPage = key.NewBinding()
 	l.AdditionalShortHelpKeys = func() []key.Binding {
 		return []key.Binding{
 			key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("enter/space", "select a project")),
@@ -47,6 +52,7 @@ func NewListSelector() tea.Model {
 			key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
 			key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
 			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
+			key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "search projects")),
 			key.NewBinding(key.WithKeys("y"), key.WithHelp("y", "yank selected project's path")),
 			key.NewBinding(key.WithKeys("m"), key.WithHelp("m", "enter moving mode")),
 		}
@@ -71,6 +77,13 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd = nil
 
 	switch msg := msg.(type) {
+	case fatalErrorMsg:
+		m.fatalError = msg.err
+		m.projectForm = nil
+		m.quitting = true
+
+		return m, tea.Quit
+
 	case tea.WindowSizeMsg:
 		m.list.SetWidth(msg.Width)
 		return m, nil
@@ -113,16 +126,28 @@ func (m listSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		resetListTitle(&m)
 		m.projectForm = nil
 
-	case fatalErrorMsg:
-		m.fatalError = msg.err
-		m.projectForm = nil
-		m.quitting = true
+	case cancelSearch:
+		m.typingSearchTerm = false
+		m.searchInput = nil
+		m.filterList(nil)
 
-		return m, tea.Quit
+	case updateSearch:
+		m.filterList(msg.filteredItemsIndices)
+
+	case submitSearch:
+		m.typingSearchTerm = false
+		m.filterList(msg.filteredItemsIndices)
 
 	// Keybinding
 	case tea.KeyMsg:
-		return handleListkeybinds(&m, msg)
+		if m.typingSearchTerm && m.searchInput != nil {
+			model, cmd := m.searchInput.Update(msg)
+			searchModel := model.(searchInputModel)
+			m.searchInput = &searchModel
+			return m, cmd
+		} else {
+			return handleListkeybinds(&m, msg)
+		}
 	}
 
 	m.list, cmd = m.list.Update(msg)
@@ -225,6 +250,22 @@ func handleListkeybinds(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cm
 		m.list.Styles.Title = styles.ListSelector.MovingModeTitleStyle
 		m.list.Title = "select another project to swap position"
 
+	case "f":
+		if m.searchInput == nil {
+			projectNames := make([]string, len(m.items))
+			for i, p := range m.items {
+				projectNames[i] = p.(project.Project).Name
+			}
+
+			s := newSearchInput(projectNames)
+			m.searchInput = &s
+			m.searchInput.Focus()
+			m.typingSearchTerm = true
+			m.searchInput.Update(nil)
+		} else {
+			m.typingSearchTerm = true
+			m.searchInput.Focus()
+		}
 	}
 
 	var cmd tea.Cmd
@@ -253,7 +294,15 @@ func (m listSelectorModel) View() string {
 		return m.projectForm.View()
 	}
 
-	return "\n" + m.list.View()
+	var sb strings.Builder
+
+	if m.searchInput != nil {
+		sb.WriteString(m.searchInput.View() + "\n")
+	}
+
+	sb.WriteString("\n" + m.list.View())
+
+	return sb.String()
 }
 
 // castToListItem takes a list of 'Project's and returns it as a casted list of tea's interface 'list.Item'.
@@ -277,6 +326,19 @@ func disableMovingMode(m *listSelectorModel) {
 	m.movingModeActive = false
 	m.list.SetDelegate(itemDelegate{movingModeInitialIndex: -1})
 	resetListTitle(m)
+}
+
+func (m *listSelectorModel) filterList(filteredIndices []int) {
+	if filteredIndices == nil {
+		m.list.SetItems(m.items)
+		return
+	}
+
+	filteredItems := make([]list.Item, len(filteredIndices))
+	for i, itemIndex := range filteredIndices {
+		filteredItems[i] = m.items[itemIndex]
+	}
+	m.list.SetItems(filteredItems)
 }
 
 type fatalErrorMsg struct {
