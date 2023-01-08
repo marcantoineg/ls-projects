@@ -331,6 +331,7 @@ func disableMovingMode(m *listSelectorModel) {
 	resetListTitle(m)
 }
 
+// filterList filters the items in the list (m.list) given a list of indices.
 func (m *listSelectorModel) filterList(filteredIndices []int) {
 	if filteredIndices == nil {
 		m.list.SetItems(m.items)
@@ -339,7 +340,9 @@ func (m *listSelectorModel) filterList(filteredIndices []int) {
 
 	filteredItems := make([]list.Item, len(filteredIndices))
 	for i, itemIndex := range filteredIndices {
-		filteredItems[i] = m.items[itemIndex]
+		if itemIndex <= len(m.items) {
+			filteredItems[i] = m.items[itemIndex]
+		}
 	}
 	m.list.SetItems(filteredItems)
 }

@@ -37,13 +37,13 @@ func (m searchInputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter", "down":
 			m.input.Blur()
-			return m, func() tea.Msg { return submitSearch{m.GetFilteredItems()} }
+			return m, func() tea.Msg { return submitSearch{m.getFilteredItems()} }
 		}
 	}
 
 	input_m, _ := m.input.Update(msg)
 	m.input = input_m
-	return m, func() tea.Msg { return updateSearch{m.GetFilteredItems()} }
+	return m, func() tea.Msg { return updateSearch{m.getFilteredItems()} }
 }
 
 func (m searchInputModel) View() string {
@@ -59,7 +59,11 @@ func (m *searchInputModel) Focus() tea.Cmd {
 	return m.input.Focus()
 }
 
-func (m searchInputModel) GetFilteredItems() []int {
+// getFilteredItems returns the indices in the unfiltered list of items that are a fuzzy match
+// with the search term entered in the text input.
+//
+// Returns nil if the search term is empty and an empty list if not match is found.
+func (m searchInputModel) getFilteredItems() []int {
 	if m.input.Value() == "" {
 		return nil
 	}
