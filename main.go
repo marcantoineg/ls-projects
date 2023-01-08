@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"list-my-projects/components"
+	projectlist "list-my-projects/components/project-list"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-	p := tea.NewProgram(components.NewListSelector())
+	p := tea.NewProgram(projectlist.NewProjectList())
 	if err := p.Start(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

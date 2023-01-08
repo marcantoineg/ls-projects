@@ -1,17 +1,19 @@
-package styles
+package projectlist
 
 import (
+	"list-my-projects/components/styles"
+
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"
 )
 
 const (
-	ListHeight       = 14
-	ListWidth        = 20
-	ListInitialTitle = "Navigate to ...?"
+	listHeight       = 14
+	listWidth        = 20
+	listInitialTitle = "Navigate to ...?"
 )
 
-var ListSelector = struct {
+var Style = struct {
 	TitleStyle           lipgloss.Style
 	SuccessTitleStyle    lipgloss.Style
 	ErrorTitleStyle      lipgloss.Style
@@ -23,10 +25,10 @@ var ListSelector = struct {
 	FatalErrorStyle      lipgloss.Style
 	PathTextStyle        lipgloss.Style
 }{
-	TitleStyle:           baseTitle().Background(lipgloss.Color("#6C91BF")),
-	SuccessTitleStyle:    baseTitle().Background(lipgloss.Color("#25A065")),
-	ErrorTitleStyle:      baseTitle().Background(lipgloss.Color("#E84855")),
-	MovingModeTitleStyle: baseTitle().Background(lipgloss.Color("#4d4d4d")),
+	TitleStyle:           styles.BaseTitle().Background(lipgloss.Color("#6C91BF")),
+	SuccessTitleStyle:    styles.BaseTitle().Background(lipgloss.Color("#25A065")),
+	ErrorTitleStyle:      styles.BaseTitle().Background(lipgloss.Color("#E84855")),
+	MovingModeTitleStyle: styles.BaseTitle().Background(lipgloss.Color("#4d4d4d")),
 	NoItemsStyle:         list.DefaultStyles().NoItems.MarginLeft(4),
 	PaginationStyle:      list.DefaultStyles().PaginationStyle.PaddingLeft(4),
 	HelpStyle:            list.DefaultStyles().HelpStyle.PaddingLeft(4).PaddingBottom(1),

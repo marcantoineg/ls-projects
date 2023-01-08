@@ -1,61 +1,59 @@
-package components
+package searchinput
 
 import (
-	"list-my-projects/components/styles"
-
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/sahilm/fuzzy"
 )
 
-type searchInputModel struct {
+type Model struct {
 	input           textinput.Model
 	unfilteredItems []string
 }
 
-func newSearchInput(items []string) searchInputModel {
+func NewSearchInput(items []string) Model {
 	t := textinput.New()
 	t.Placeholder = "Search..."
-	t.CursorStyle = styles.SearchInput.InputCursorStyle
+	t.CursorStyle = Style.InputCursorStyle
 
-	return searchInputModel{
+	return Model{
 		input:           t,
 		unfilteredItems: items,
 	}
 }
 
-func (m searchInputModel) Init() tea.Cmd {
+func (m Model) Init() tea.Cmd {
 	return nil
 }
 
-func (m searchInputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch keypress := msg.String(); keypress {
 		case "ctrl+c", "esc":
-			return m, func() tea.Msg { return cancelSearch{} }
+			return m, func() tea.Msg { return CancelSearch{} }
 
 		case "enter", "down":
 			m.input.Blur()
-			return m, func() tea.Msg { return submitSearch{m.getFilteredItems()} }
+			return m, func() tea.Msg { return SubmitSearch{m.getFilteredItems()} }
 		}
 	}
 
 	input_m, _ := m.input.Update(msg)
 	m.input = input_m
-	return m, func() tea.Msg { return updateSearch{m.getFilteredItems()} }
+	return m, func() tea.Msg { return UpdateSearch{m.getFilteredItems()} }
 }
 
-func (m searchInputModel) View() string {
-	containerStyle := styles.SearchInput.ContainerStyle
+func (m Model) View() string {
+	containerStyle := Style.ContainerStyle
 	if m.input.Focused() {
-		containerStyle = styles.SearchInput.FocusedContainerStyle
+		containerStyle = Style.FocusedContainerStyle
 	}
 
 	return containerStyle.Render(m.input.View())
 }
 
-func (m *searchInputModel) Focus() tea.Cmd {
+func (m *Model) Focus() tea.Cmd {
 	return m.input.Focus()
 }
 
@@ -63,7 +61,7 @@ func (m *searchInputModel) Focus() tea.Cmd {
 // with the search term entered in the text input.
 //
 // Returns nil if the search term is empty and an empty list if not match is found.
-func (m searchInputModel) getFilteredItems() []int {
+func (m Model) getFilteredItems() []int {
 	if m.input.Value() == "" {
 		return nil
 	}
@@ -75,12 +73,4 @@ func (m searchInputModel) getFilteredItems() []int {
 	}
 
 	return itemIndices
-}
-
-type cancelSearch struct{}
-type updateSearch struct {
-	filteredItemsIndices []int
-}
-type submitSearch struct {
-	filteredItemsIndices []int
 }
