@@ -167,8 +167,12 @@ func handleListkeybinds(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cm
 		return m, tea.Quit
 
 	case "enter", "space":
+		if len(m.list.Items()) == 0 {
+			return m, nil
+		}
 		if !m.movingModeActive {
 			selectedItem := m.list.SelectedItem().(project.Project)
+
 			m.choice = &selectedItem
 
 			cmd := exec.Command("code", "-n", ".")
