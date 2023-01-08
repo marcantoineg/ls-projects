@@ -25,5 +25,8 @@ You can either use it with `go run main.go` or by exporting it as a binary in yo
 <img width="80%" src="https://user-images.githubusercontent.com/16008095/186266868-467a9f86-dab0-474c-aed8-28ace1d6c3b7.png">
 
 ### Form
-<img width="40%" src="https://user-images.githubusercontent.com/16008095/186266988-c0722604-84aa-47e0-a6c9-c4101b03d91f.png">
-<img width="40%" src="https://user-images.githubusercontent.com/16008095/186267110-3b90a244-0322-4904-9a09-e641449b823a.png">
+<img width="50%" src="https://user-images.githubusercontent.com/16008095/186266988-c0722604-84aa-47e0-a6c9-c4101b03d91f.png">
+<img width="50%" src="https://user-images.githubusercontent.com/16008095/186267110-3b90a244-0322-4904-9a09-e641449b823a.png">
+
+### Search
+<img width="80%" src="https://user-images.githubusercontent.com/16008095/211213373-aa7d409b-31fa-46ed-b2f1-0f82e8f24b55.png">
