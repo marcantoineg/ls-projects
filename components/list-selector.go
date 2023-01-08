@@ -172,7 +172,6 @@ func handleListkeybinds(m *listSelectorModel, msg tea.KeyMsg) (tea.Model, tea.Cm
 		}
 		if !m.movingModeActive {
 			selectedItem := m.list.SelectedItem().(project.Project)
-
 			m.choice = &selectedItem
 
 			cmd := exec.Command("code", "-n", ".")

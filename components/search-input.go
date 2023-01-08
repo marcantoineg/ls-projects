@@ -41,8 +41,8 @@ func (m searchInputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 
-	temp_m, _ := m.input.Update(msg)
-	m.input = temp_m
+	input_m, _ := m.input.Update(msg)
+	m.input = input_m
 	return m, func() tea.Msg { return updateSearch{m.GetFilteredItems()} }
 }
 
