@@ -1,7 +1,8 @@
-package styles
+package projectform
 
 import (
 	"fmt"
+	"list-my-projects/components/styles"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -23,10 +24,10 @@ func (s ProjectFormStyles) BlurredButton() string {
 	return fmt.Sprintf("[ %s ]", s.BlurredStyle.Render("Submit"))
 }
 
-var Form = ProjectFormStyles{
-	NewProjectTitleStyle:  baseTitle().MarginLeft(0).Background(lipgloss.Color("#6C91BF")),
-	EditProjectTitleStyle: baseTitle().MarginLeft(0).Background(lipgloss.Color("#DDB771")).Foreground(lipgloss.Color("#000000")),
-	ErrorTitleStyle:       baseTitle().MarginLeft(0).Background(lipgloss.Color("#E84855")),
+var Style = ProjectFormStyles{
+	NewProjectTitleStyle:  styles.BaseTitle().MarginLeft(0).Background(lipgloss.Color("#6C91BF")),
+	EditProjectTitleStyle: styles.BaseTitle().MarginLeft(0).Background(lipgloss.Color("#DDB771")).Foreground(lipgloss.Color("#000000")),
+	ErrorTitleStyle:       styles.BaseTitle().MarginLeft(0).Background(lipgloss.Color("#E84855")),
 	NewFocusedStyle:       lipgloss.NewStyle().Foreground(lipgloss.Color("#6C91BF")),
 	EditFocusedStyle:      lipgloss.NewStyle().Foreground(lipgloss.Color("#DDB771")),
 	BlurredStyle:          lipgloss.NewStyle().Foreground(lipgloss.Color("240")),

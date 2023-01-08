@@ -1,6 +1,10 @@
-package styles
+package searchinput
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	projectform "list-my-projects/components/project-form"
+
+	"github.com/charmbracelet/lipgloss"
+)
 
 type SearchInputStyles struct {
 	ContainerStyle        lipgloss.Style
@@ -8,8 +12,8 @@ type SearchInputStyles struct {
 	InputCursorStyle      lipgloss.Style
 }
 
-var SearchInput = SearchInputStyles{
+var Style = SearchInputStyles{
 	ContainerStyle:        lipgloss.NewStyle().Padding(0, 1).MarginLeft(4).Border(lipgloss.NormalBorder()),
 	FocusedContainerStyle: lipgloss.NewStyle().Padding(0, 1).MarginLeft(4).Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#6C91BF")),
-	InputCursorStyle:      Form.NewFocusedStyle.Copy(),
+	InputCursorStyle:      projectform.Style.NewFocusedStyle.Copy(),
 }
