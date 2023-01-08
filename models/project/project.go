@@ -26,7 +26,7 @@ func (p Project) ValidatePath() bool {
 }
 
 // GetAll fetches the projects from the disk and returns them.
-// If an error happens throughout the process, returns the error as the second return value.
+// If an error happens throughout the process, it returns the error as the second return value.
 func GetAll() ([]Project, error) {
 	if exists := fileutil.Exists(getProjectsFilePath()); !exists {
 		err := fileutil.CreateEmptyListFile(getProjectsFilePath())
