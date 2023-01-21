@@ -9,11 +9,33 @@ import (
 	"os/exec"
 
 	"github.com/atotto/clipboard"
+	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+var keybinds = _keybinds{}
+
+type _keybinds struct{}
+
+func (_ _keybinds) defineShort() []key.Binding {
+	return []key.Binding{
+		key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("⏎/space", "open a project")),
+	}
+}
+
+func (_ _keybinds) defineLong() []key.Binding {
+	return []key.Binding{
+		key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
+		key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
+		key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
+		key.NewBinding(key.WithKeys("f", "/"), key.WithHelp("f|/", "find in projects")),
+		key.NewBinding(key.WithKeys("y"), key.WithHelp("y", "yank selected project's path to clipboard")),
+		key.NewBinding(key.WithKeys("m"), key.WithHelp("m", "enter moving mode")),
+	}
+}
+
 // handleKeyMsg handles the keybinding part of the Update function.
-func handleListkeybinds(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (_ _keybinds) handle(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
 	case "ctrl+c", "q", "esc":
 		if m.movingModeActive {
@@ -111,7 +133,7 @@ func handleListkeybinds(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.list.Styles.Title = Style.MovingModeTitleStyle
 		m.list.Title = "select another project to swap position"
 
-	case "f":
+	case "f", "/":
 		if m.searchInput == nil {
 			projectNames := make([]string, len(m.items))
 			for i, p := range m.items {
@@ -124,6 +146,12 @@ func handleListkeybinds(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.typingSearchTerm = true
 			m.searchInput.Update(nil)
 		} else {
+			m.typingSearchTerm = true
+			m.searchInput.Focus()
+		}
+
+	case "up":
+		if m.searchInput != nil && m.list.Paginator.Page == 0 && m.list.Cursor() == 0 {
 			m.typingSearchTerm = true
 			m.searchInput.Focus()
 		}
