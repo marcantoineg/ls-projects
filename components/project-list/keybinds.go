@@ -111,7 +111,7 @@ func handleListkeybinds(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.list.Styles.Title = Style.MovingModeTitleStyle
 		m.list.Title = "select another project to swap position"
 
-	case "f":
+	case "f", "/":
 		if m.searchInput == nil {
 			projectNames := make([]string, len(m.items))
 			for i, p := range m.items {
