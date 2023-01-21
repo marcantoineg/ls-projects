@@ -127,6 +127,12 @@ func handleListkeybinds(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.typingSearchTerm = true
 			m.searchInput.Focus()
 		}
+
+	case "up":
+		if m.searchInput != nil && m.list.Paginator.Page == 0 && m.list.Cursor() == 0 {
+			m.typingSearchTerm = true
+			m.searchInput.Focus()
+		}
 	}
 
 	var cmd tea.Cmd
