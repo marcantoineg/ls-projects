@@ -40,21 +40,8 @@ func NewProjectList() tea.Model {
 
 	l.KeyMap.NextPage = key.NewBinding()
 	l.KeyMap.PrevPage = key.NewBinding()
-	l.AdditionalShortHelpKeys = func() []key.Binding {
-		return []key.Binding{
-			key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("enter/space", "select a project")),
-		}
-	}
-	l.AdditionalFullHelpKeys = func() []key.Binding {
-		return []key.Binding{
-			key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
-			key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
-			key.NewBinding(key.WithKeys("d"), key.WithHelp("d", "delete selected project")),
-			key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "search projects")),
-			key.NewBinding(key.WithKeys("y"), key.WithHelp("y", "yank selected project's path")),
-			key.NewBinding(key.WithKeys("m"), key.WithHelp("m", "enter moving mode")),
-		}
-	}
+	l.AdditionalShortHelpKeys = keybinds.defineShort
+	l.AdditionalFullHelpKeys = keybinds.defineLong
 
 	m := Model{list: l}
 	return m
@@ -142,7 +129,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.searchInput = &searchModel
 			return m, cmd
 		} else {
-			return handleListkeybinds(&m, msg)
+			return keybinds.handle(&m, msg)
 		}
 	}
 
@@ -164,7 +151,10 @@ func (m Model) View() string {
 	}
 
 	if m.quitting {
-		return Style.QuitTextStyle.Render("mmmhhhh-kay.")
+		var sb strings.Builder
+		sb.WriteString(Style.QuitTextStyle.Render(quitMessage()))
+		sb.WriteString(Style.QuitTextStyleSub.Render("— presented to you by ChatGPT"))
+		return sb.String()
 	}
 
 	if m.projectForm != nil {
