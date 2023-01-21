@@ -151,7 +151,10 @@ func (m Model) View() string {
 	}
 
 	if m.quitting {
-		return Style.QuitTextStyle.Render("mmmhhhh-kay.")
+		var sb strings.Builder
+		sb.WriteString(Style.QuitTextStyle.Render(quitMessage()))
+		sb.WriteString(Style.QuitTextStyleSub.Render("— presented to you by ChatGPT"))
+		return sb.String()
 	}
 
 	if m.projectForm != nil {

@@ -22,6 +22,7 @@ var Style = struct {
 	PaginationStyle      lipgloss.Style
 	HelpStyle            lipgloss.Style
 	QuitTextStyle        lipgloss.Style
+	QuitTextStyleSub     lipgloss.Style
 	FatalErrorStyle      lipgloss.Style
 	PathTextStyle        lipgloss.Style
 }{
@@ -32,7 +33,8 @@ var Style = struct {
 	NoItemsStyle:         list.DefaultStyles().NoItems.MarginLeft(4),
 	PaginationStyle:      list.DefaultStyles().PaginationStyle.PaddingLeft(4),
 	HelpStyle:            list.DefaultStyles().HelpStyle.PaddingLeft(4).PaddingBottom(1),
-	QuitTextStyle:        lipgloss.NewStyle().Margin(1, 2),
+	QuitTextStyle:        lipgloss.NewStyle().Padding(1, 2),
+	QuitTextStyleSub:     lipgloss.NewStyle().Padding(1, 2).Italic(true).Faint(true),
 	FatalErrorStyle:      lipgloss.NewStyle().Margin(1, 2).Foreground(lipgloss.Color("#E84855")),
 	PathTextStyle:        lipgloss.NewStyle().Foreground(lipgloss.Color("170")),
 }
