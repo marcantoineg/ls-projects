@@ -49,12 +49,12 @@ config:
   # To hide the title use the value null
   # Don't forget to add a backgroundColor style with a null as type
   frameBox:
-    type: solid
+    type: floating
     title: "github.com/marcantoineg/list-my-projects"
     style:
-      border: 0px black solid
-      boxShadow: 10px black solid
-      # margin: 0px
+      border: 1px solid black
+      boxShadow: "0px 0px 0px 20px #404E5C"
+      margin: 10px
 
   # Add a watermark image to the rendered gif
   # You need to specify an absolute path for
@@ -376,4 +376,4 @@ records:
   - delay: 700
     content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌───────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > c+\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└───────┘\e[0m\r\r\n\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 1. exercism - c++\e[0m                                           \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n\e[1B                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
   - delay: 1200
-    content: "\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K                                                                           \r\r\n  The first successful artificial heart transplant was performed in 1982.  \r\r\n                                                                                                            \r\r\n  \e[3;2m— presented to you by ChatGPT\e[0m  \r\r\n"
+    content: "\e[2J\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K                                                                           \r\r\n  The first successful artificial heart transplant was performed in 1982.  \r\r\n                                                                                                            \r\r\n  \e[3;2m— presented to you by ChatGPT\e[0m  \r\r\n"
