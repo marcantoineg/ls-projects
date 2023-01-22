@@ -1,0 +1,379 @@
+# The configurations that used for the recording, feel free to edit them
+# https://github.com/faressoft/terminalizer
+config:
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: zsh -l
+
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /Users/marc-antoinegiguere/dev/go/list-my-projects
+
+  # Export additional ENV variables
+  env:
+    recording: true
+
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 110
+
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 25
+
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+
+  # Quality
+  # 1 - 100
+  quality: 100
+
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: solid
+    title: "github.com/marcantoineg/list-my-projects"
+    style:
+      border: 0px black solid
+      boxShadow: 10px black solid
+      # margin: 0px
+
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: "https://github.githubassets.com/images/modules/site/icons/footer/github-mark.svg"
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.25
+
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+
+  # The size of the font
+  fontSize: 12
+
+  # The height of lines
+  lineHeight: 1
+
+  # The spacing between letters
+  letterSpacing: 0
+
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+
+# Records, feel free to edit them
+records:
+  - delay: 100
+    content: g
+  - delay: 100
+    content: o
+  - delay: 100
+    content: " "
+  - delay: 100
+    content: r
+  - delay: 100
+    content: u
+  - delay: 100
+    content: "n"
+  - delay: 100
+    content: " "
+  - delay: 100
+    content: m
+  - delay: 100
+    content: a
+  - delay: 100
+    content: i
+  - delay: 100
+    content: "n"
+  - delay: 100
+    content: ".go "
+  - delay: 100
+    content: "\r\n"
+  - delay: 100
+    content: "\e[?25l"
+  - delay: 100
+    content: "\r\r\n    \e[48;2;108;145;191m \e[0m\e[1;38;2;255;253;245;48;2;108;145;191mNavigate to ...?\e[0m\e[48;2;108;145;191m \e[0m                                          \r\r\n                                                                \r\r\n  \e[38;2;108;145;191m> 1. exercism - go\e[0m                                            \r\r\n    2. exercism - c++                                           \r\r\n    3. exercism - rust                                          \r\r\n    4. exercism - scala                                         \r\r\n    5. exercism - elixir                                        \r\r\n    6. windchill                                                \r\r\n    7. windchill-api                                            \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m                                                         \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K                             \r\r\n    \e[48;2;108;145;191m \e[0m\e[1;38;2;255;253;245;48;2;108;145;191mAdd new project\e[0m\e[48;2;108;145;191m \e[0m        \r\r\n                             \r\r\n    \e[38;2;108;145;191m> \e[0m\e[7;38;2;108;145;191mN\e[0m\e[38;5;240mame [*]\e[0m               \r\r\n    > \e[38;5;240mP\e[0m\e[38;5;240math [*]\e[0m               \r\r\n                             \r\r\n    [ \e[38;5;240mSubmit\e[0m ]               \r\r\n                             \r\r\n                             \r\r\n    \e[3;2;38;5;240m[*] marks required fields\e[0m\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191me\e[0m\e[7;38;2;108;145;191m \e[0m                     \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191me\e[0m\e[38;2;108;145;191m \e[0m                     \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191me\e[0m\e[7;38;2;108;145;191m \e[0m                     \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mex\e[0m\e[7;38;2;108;145;191m \e[0m                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexe\e[0m\e[7;38;2;108;145;191m \e[0m                   \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexer\e[0m\e[7;38;2;108;145;191m \e[0m                  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexerc\e[0m\e[7;38;2;108;145;191m \e[0m                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexerci\e[0m\e[7;38;2;108;145;191m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexercis\e[0m\e[7;38;2;108;145;191m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexercism\e[0m\e[7;38;2;108;145;191m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191mexercism\e[0m\e[38;2;108;145;191m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B    > exercism               \r\r\n    \e[38;2;108;145;191m> \e[0m\e[7;38;2;108;145;191mP\e[0m\e[38;5;240math [*]\e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m\e[38;5;240mP\e[0m\e[0m\e[38;5;240math [*]\e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~\e[0m\e[7;38;2;108;145;191m \e[0m                     \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/\e[0m\e[7;38;2;108;145;191m \e[0m                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/d\e[0m\e[7;38;2;108;145;191m \e[0m                   \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/de\e[0m\e[7;38;2;108;145;191m \e[0m                  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev\e[0m\e[7;38;2;108;145;191m \e[0m                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/\e[0m\e[7;38;2;108;145;191m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/\e[0m\e[38;2;108;145;191m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/g\e[0m\e[7;38;2;108;145;191m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/go\e[0m\e[7;38;2;108;145;191m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/go\e[0m\e[38;2;108;145;191m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/g\e[0m\e[7;38;2;108;145;191m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/\e[0m\e[7;38;2;108;145;191m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/\e[0m\e[38;2;108;145;191m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/s\e[0m\e[7;38;2;108;145;191m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/st\e[0m\e[7;38;2;108;145;191m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/stu\e[0m\e[7;38;2;108;145;191m \e[0m             \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/stud\e[0m\e[7;38;2;108;145;191m \e[0m            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studi\e[0m\e[7;38;2;108;145;191m \e[0m           \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studie\e[0m\e[7;38;2;108;145;191m \e[0m          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies\e[0m\e[7;38;2;108;145;191m \e[0m         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/\e[0m\e[7;38;2;108;145;191m \e[0m        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/\e[0m\e[38;2;108;145;191m \e[0m        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/e\e[0m\e[7;38;2;108;145;191m \e[0m       \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/ex\e[0m\e[7;38;2;108;145;191m \e[0m      \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exe\e[0m\e[7;38;2;108;145;191m \e[0m     \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exer\e[0m\e[7;38;2;108;145;191m \e[0m    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exerc\e[0m\e[7;38;2;108;145;191m \e[0m   \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exerci\e[0m\e[7;38;2;108;145;191m \e[0m  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exercis\e[0m\e[7;38;2;108;145;191m \e[0m \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exercism\e[0m\e[7;38;2;108;145;191m \e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    \e[38;2;108;145;191m> \e[0m\e[38;2;108;145;191m~/dev/studies/exercism\e[0m\e[38;2;108;145;191m \e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                             \r\r\n\e[1B\e[1B\e[1B    > ~/dev/studies/exercism \r\r\n\e[1B    \e[38;2;108;145;191m[ submit ]\e[0m               \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K\r\r\n    \e[48;2;36;160;101m \e[0m\e[1;38;2;255;253;245;48;2;36;160;101mproject 'exercism' added!\e[0m\e[48;2;36;160;101m \e[0m                                 \r\r\n                                                                \r\r\n  \e[38;2;108;145;191m> 1. exercism - go\e[0m                                            \r\r\n    2. exercism                                                 \r\r\n    3. exercism - c++                                           \r\r\n    4. exercism - rust                                          \r\r\n    5. exercism - scala                                         \r\r\n    6. exercism - elixir                                        \r\r\n    7. windchill                                                \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m                                                         \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 600
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[110D\e[2K\r\r\n    \e[48;2;77;77;77m \e[0m\e[1;38;2;255;253;245;48;2;77;77;77mselect another project to swap position\e[0m\e[48;2;77;77;77m \e[0m                   \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 300
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B  \e[38;2;77;77;77m* 1. exercism - go\e[0m                                            \r\r\n  \e[38;2;108;145;191m> 2. exercism\e[0m                                                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[110D\e[2K\r\r\n    \e[48;2;108;145;191m \e[0m\e[1;38;2;255;253;245;48;2;108;145;191mNavigate to ...?\e[0m\e[48;2;108;145;191m \e[0m                                          \r\r\n\e[1B    1. exercism                                                 \r\r\n  \e[38;2;108;145;191m> 2. exercism - go\e[0m                                            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B    2. exercism - go                                            \r\r\n  \e[38;2;108;145;191m> 3. exercism - c++\e[0m                                           \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B    3. exercism - c++                                           \r\r\n  \e[38;2;108;145;191m> 4. exercism - rust\e[0m                                          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B    4. exercism - rust                                          \r\r\n  \e[38;2;108;145;191m> 5. exercism - scala\e[0m                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - scala                                         \r\r\n  \e[38;2;108;145;191m> 6. exercism - elixir\e[0m                                        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K                                    \r\r\n    \e[48;2;221;183;113m \e[0m\e[1;38;2;0;0;0;48;2;221;183;113mEdit project\e[0m\e[48;2;221;183;113m \e[0m                  \r\r\n                                    \r\r\n    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - elixir\e[0m\e[7;38;2;221;183;113m \e[0m            \r\r\n    > ~/dev/studies/exercism/elixir \r\r\n                                    \r\r\n    [ \e[38;5;240mSubmit\e[0m ]                      \r\r\n                                    \r\r\n                                    \r\r\n    \e[3;2;38;5;240m[*] marks required fields\e[0m       \e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - elixi\e[0m\e[7;38;2;221;183;113m \e[0m             \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - elix\e[0m\e[7;38;2;221;183;113m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - eli\e[0m\e[7;38;2;221;183;113m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - el\e[0m\e[7;38;2;221;183;113m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - e\e[0m\e[7;38;2;221;183;113m \e[0m                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - \e[0m\e[7;38;2;221;183;113m \e[0m                  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - \e[0m\e[38;2;221;183;113m \e[0m                  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - \e[7;38;2;221;183;113m \e[0m                  \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - n\e[0m\e[7;38;2;221;183;113m \e[0m                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - n\e[0m\e[38;2;221;183;113m \e[0m                 \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - no\e[0m\e[7;38;2;221;183;113m \e[0m                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not\e[0m\e[7;38;2;221;183;113m \e[0m               \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not \e[0m\e[7;38;2;221;183;113m \e[0m              \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not e\e[0m\e[7;38;2;221;183;113m \e[0m             \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not el\e[0m\e[7;38;2;221;183;113m \e[0m            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not eli\e[0m\e[7;38;2;221;183;113m \e[0m           \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not elix\e[0m\e[7;38;2;221;183;113m \e[0m          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not elixi\e[0m\e[7;38;2;221;183;113m \e[0m         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 100
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not elixir\e[0m\e[7;38;2;221;183;113m \e[0m        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113mexercism - not elixir\e[0m\e[7;38;2;221;183;113m \e[0m        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B    > exercism - not elixir         \r\r\n    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113m~/dev/studies/exercism/elixir\e[0m\e[7;38;2;221;183;113m \e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B\e[1B    \e[38;2;221;183;113m> \e[0m\e[38;2;221;183;113m~/dev/studies/exercism/elixir\e[0m\e[38;2;221;183;113m \e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K                                    \r\r\n\e[1B\e[1B\e[1B    > ~/dev/studies/exercism/elixir \r\r\n\e[1B    \e[38;2;221;183;113m[ submit ]\e[0m                      \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K\r\r\n    \e[48;2;36;160;101m \e[0m\e[1;38;2;255;253;245;48;2;36;160;101mproject 'exercism - not elixir' updated!\e[0m\e[48;2;36;160;101m \e[0m                  \r\r\n                                                                \r\r\n    1. exercism                                                 \r\r\n    2. exercism - go                                            \r\r\n    3. exercism - c++                                           \r\r\n    4. exercism - rust                                          \r\r\n    5. exercism - scala                                         \r\r\n  \e[38;2;108;145;191m> 6. exercism - not elixir\e[0m                                    \r\r\n    7. windchill                                                \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m                                                         \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    6. exercism - not elixir                                    \r\r\n  \e[38;2;108;145;191m> 7. windchill\e[0m                                                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 6. exercism - not elixir\e[0m                                    \r\r\n    7. windchill                                                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 5. exercism - scala\e[0m                                         \r\r\n    6. exercism - not elixir                                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 4. exercism - rust\e[0m                                          \r\r\n    5. exercism - scala                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 3. exercism - c++\e[0m                                           \r\r\n    4. exercism - rust                                          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 2. exercism - go\e[0m                                            \r\r\n    3. exercism - c++                                           \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B  \e[38;2;108;145;191m> 1. exercism\e[0m                                                 \r\r\n    2. exercism - go                                            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B    1. exercism                                                 \r\r\n  \e[38;2;108;145;191m> 2. exercism - go\e[0m                                            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B    2. exercism - go                                            \r\r\n  \e[38;2;108;145;191m> 3. exercism - c++\e[0m                                           \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B    3. exercism - c++                                           \r\r\n  \e[38;2;108;145;191m> 4. exercism - rust\e[0m                                          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B    4. exercism - rust                                          \r\r\n  \e[38;2;108;145;191m> 5. exercism - scala\e[0m                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - scala                                         \r\r\n  \e[38;2;108;145;191m> 6. exercism - not elixir\e[0m                                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    6. exercism - not elixir                                    \r\r\n  \e[38;2;108;145;191m> 7. windchill\e[0m                                                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B  \e[38;2;108;145;191m> 8. windchill-api\e[0m                                            \r\r\n    9. windchill-tui                                            \r\r\n    10. windchill-react                                         \r\r\n    11. nswt-api                                                \r\r\n    12. messengeure                                             \r\r\n    13. atomic-counter                                          \r\r\n    14. readdle-me-this                                         \r\r\n\e[1B    \e[38;2;60;60;60m•\e[0m\e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m                                                         \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B    8. windchill-api                                            \r\r\n  \e[38;2;108;145;191m> 9. windchill-tui\e[0m                                            \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B    9. windchill-tui                                            \r\r\n  \e[38;2;108;145;191m> 10. windchill-react\e[0m                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B    10. windchill-react                                         \r\r\n  \e[38;2;108;145;191m> 11. nswt-api\e[0m                                                \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B    11. nswt-api                                                \r\r\n  \e[38;2;108;145;191m> 12. messengeure\e[0m                                             \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    12. messengeure                                             \r\r\n  \e[38;2;108;145;191m> 13. atomic-counter\e[0m                                          \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    13. atomic-counter                                          \r\r\n  \e[38;2;108;145;191m> 14. readdle-me-this\e[0m                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B  \e[38;2;108;145;191m> 15. drink-some-water\e[0m                                        \r\r\n    16. gin-api-template                                        \r\r\n    17. jasper                                                  \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n\e[1B    \e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;151;151;151m•\e[0m                                                         \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[110D\e[2K\r\r\n\e[1B\e[1B    15. drink-some-water                                        \r\r\n  \e[38;2;108;145;191m> 16. gin-api-template\e[0m                                        \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌─────────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > \e[7;38;2;108;145;191mS\e[0m\e[38;5;240mearch...\e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└─────────────┘\e[0m\r\r\n\r\r\n    \e[48;2;36;160;101m \e[0m\e[1;38;2;255;253;245;48;2;36;160;101mproject 'exercism - not elixir' updated!\e[0m\e[48;2;36;160;101m \e[0m                  \r\r\n                                                                \r\r\n    15. drink-some-water                                        \r\r\n  \e[38;2;108;145;191m> 16. gin-api-template\e[0m                                        \r\r\n    17. jasper                                                  \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n    \e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;151;151;151m•\e[0m                                                         \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > e\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────┘\e[0m\r\r\n\e[1B\e[1B\e[1B    8. readdle-me-this                                          \r\r\n  \e[38;2;108;145;191m> 9. jasper\e[0m                                                   \r\r\n    10. atomic-counter                                          \r\r\n    11. windchill-react                                         \r\r\n    12. gin-api-template                                        \r\r\n    13. drink-some-water                                        \r\r\n\e[1B\e[1B    \e[38;2;60;60;60m•\e[0m\e[38;2;151;151;151m•\e[0m                                                          \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌───────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > ex\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└───────┘\e[0m\r\r\n\e[1B\e[1B\e[1B    1. exercism                                                 \r\r\n  \e[38;2;108;145;191m> 2. exercism - go\e[0m                                            \r\r\n    3. exercism - c++                                           \r\r\n    4. exercism - rust                                          \r\r\n    5. exercism - scala                                         \r\r\n    6. exercism - not elixir                                    \r\r\n\e[1B\e[1B                                                                \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exe\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - not elixir                                    \r\r\n    6. exercism - scala                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌─────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exer\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└─────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - scala                                         \r\r\n    6. exercism - not elixir                                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exerc\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌───────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exerci\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└───────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exerc\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌─────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exer\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└─────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > exe\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - not elixir                                    \r\r\n    6. exercism - scala                                         \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌───────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > ex\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└───────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    5. exercism - scala                                         \r\r\n    6. exercism - not elixir                                    \r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > e\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────┘\e[0m\r\r\n\r\r\n    \e[48;2;36;160;101m \e[0m\e[1;38;2;255;253;245;48;2;36;160;101mproject 'exercism - not elixir' updated!\e[0m\e[48;2;36;160;101m \e[0m                  \r\r\n                                                                \r\r\n    1. exercism                                                 \r\r\n  \e[38;2;108;145;191m> 2. exercism - go\e[0m                                            \r\r\n    3. exercism - c++                                           \r\r\n    4. exercism - rust                                          \r\r\n    5. exercism - scala                                         \r\r\n    6. messengeure                                              \r\r\n    7. exercism - not elixir                                    \r\r\n    8. readdle-me-this                                          \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m                                                          \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌─────────────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > \e[7;38;2;108;145;191mS\e[0m\e[38;5;240mearch...\e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└─────────────┘\e[0m\r\r\n\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B\e[1B    6. exercism - not elixir                                    \r\r\n    7. windchill                                                \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m\e[38;2;60;60;60m•\e[0m                                                         \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 200
+    content: "\e[1A\e[1A\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > c\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────┘\e[0m\r\r\n\e[1B\e[1B\e[1B    1. atomic-counter                                           \r\r\n  \e[38;2;108;145;191m> 2. exercism - c++\e[0m                                           \r\r\n    3. exercism                                                 \r\r\n    4. windchill                                                \r\r\n    5. windchill-tui                                            \r\r\n    6. windchill-api                                            \r\r\n    7. exercism - go                                            \r\r\n\e[1B    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m                                                          \r\r\n\e[1B\e[1B\e[110D"
+  - delay: 200
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌──────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > c\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└──────┘\e[0m\r\r\n\r\r\n    \e[48;2;36;160;101m \e[0m\e[1;38;2;255;253;245;48;2;36;160;101mproject 'exercism - not elixir' updated!\e[0m\e[48;2;36;160;101m \e[0m                  \r\r\n                                                                \r\r\n    1. atomic-counter                                           \r\r\n  \e[38;2;108;145;191m> 2. exercism - c++\e[0m                                           \r\r\n    3. exercism                                                 \r\r\n    4. windchill                                                \r\r\n    5. windchill-tui                                            \r\r\n    6. windchill-api                                            \r\r\n    7. exercism - go                                            \r\r\n    8. windchill-react                                          \r\r\n                                                                \r\r\n    \e[38;2;151;151;151m•\e[0m\e[38;2;60;60;60m•\e[0m                                                          \r\r\n                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 700
+    content: "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[110D\e[2K    \e[38;2;108;145;191m┌───────┐\e[0m\r\r\n    \e[38;2;108;145;191m│\e[0m > c+\e[7;38;2;108;145;191m \e[0m \e[38;2;108;145;191m│\e[0m\r\r\n    \e[38;2;108;145;191m└───────┘\e[0m\r\r\n\e[1B\e[1B\e[1B  \e[38;2;108;145;191m> 1. exercism - c++\e[0m                                           \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n                                                                \r\r\n\e[1B                                                                \r\r\n    \e[38;2;97;97;97m↑/k\e[0m \e[38;2;73;73;73mup\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m↓/j\e[0m \e[38;2;73;73;73mdown\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m⏎/space\e[0m \e[38;2;73;73;73mopen a project\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97mq\e[0m \e[38;2;73;73;73mquit\e[0m\e[38;2;60;60;60m • \e[0m\e[38;2;97;97;97m?\e[0m \e[38;2;73;73;73mmore\e[0m\r\r\n                                                                \e[110D"
+  - delay: 1200
+    content: "\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K                                                                           \r\r\n  The first successful artificial heart transplant was performed in 1982.  \r\r\n                                                                                                            \r\r\n  \e[3;2m— presented to you by ChatGPT\e[0m  \r\r\n"
