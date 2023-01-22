@@ -2,10 +2,17 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    assignees:
+      - "marcantoineg"
+    reviewers:
+      - "marcantoineg"
     schedule:
       interval: "weekly"
   - package-ecosystem: "gomod"
     directory: "/"
+    assignees:
+      - "marcantoineg"
+    reviewers:
+      - "marcantoineg"
     schedule:
-      interval: "daily"
-    open-pull-requests-limit: 5
+      interval: "weekly"
