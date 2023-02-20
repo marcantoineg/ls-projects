@@ -8,6 +8,7 @@ updates:
       - "marcantoineg"
     schedule:
       interval: "weekly"
+      day: "saturday"
   - package-ecosystem: "gomod"
     directory: "/"
     assignees:
@@ -16,3 +17,4 @@ updates:
       - "marcantoineg"
     schedule:
       interval: "weekly"
+      day: "saturday"
