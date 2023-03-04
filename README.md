@@ -1,4 +1,4 @@
-# 📚 list-my-projects
+# 📚 ls-projects
 
 ![ci badge](https://github.com/marcantoineg/list-my-projects/actions/workflows/ci.yml/badge.svg)
 [![Release](https://github.com/marcantoineg/list-my-projects/actions/workflows/release.yml/badge.svg)](https://github.com/marcantoineg/list-my-projects/actions/workflows/release.yml)
