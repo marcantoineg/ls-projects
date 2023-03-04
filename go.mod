@@ -2,7 +2,7 @@ module list-my-projects
 
 go 1.18
 
-require github.com/stretchr/testify v1.8.1
+require github.com/stretchr/testify v1.8.2
 
 require (
 	github.com/aymanbagabas/go-osc52 v1.2.1 // indirect
