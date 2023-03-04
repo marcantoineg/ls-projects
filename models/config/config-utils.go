@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	"fmt"
-	"list-my-projects/fileutil"
+	"ls-projects/fileutil"
 )
 
 func init() {

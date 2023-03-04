@@ -1,7 +1,7 @@
 package searchinput
 
 import (
-	projectform "list-my-projects/components/project-form"
+	projectform "ls-projects/components/project-form"
 
 	"github.com/charmbracelet/lipgloss"
 )

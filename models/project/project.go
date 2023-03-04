@@ -4,8 +4,8 @@ package project
 import (
 	"errors"
 	"fmt"
-	"list-my-projects/fileutil"
-	"list-my-projects/models/config"
+	"ls-projects/fileutil"
+	"ls-projects/models/config"
 )
 
 // A Project stores simple information about a project on disk.

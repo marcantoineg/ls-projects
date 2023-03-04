@@ -2,7 +2,7 @@ package project
 
 import (
 	"io/ioutil"
-	"list-my-projects/models/config"
+	"ls-projects/models/config"
 
 	"os"
 	"testing"

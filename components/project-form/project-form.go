@@ -3,7 +3,7 @@ package projectform
 import (
 	"errors"
 	"fmt"
-	"list-my-projects/models/project"
+	"ls-projects/models/project"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"

@@ -1,7 +1,7 @@
 # 📚 ls-projects
 
-![ci badge](https://github.com/marcantoineg/list-my-projects/actions/workflows/ci.yml/badge.svg)
-[![Release](https://github.com/marcantoineg/list-my-projects/actions/workflows/release.yml/badge.svg)](https://github.com/marcantoineg/list-my-projects/actions/workflows/release.yml)
+![ci badge](https://github.com/marcantoineg/ls-projects/actions/workflows/ci.yml/badge.svg)
+[![Release](https://github.com/marcantoineg/ls-projects/actions/workflows/release.yml/badge.svg)](https://github.com/marcantoineg/ls-projects/actions/workflows/release.yml)
 <img height="20px" src="https://img.shields.io/badge/Golang-FFFFFF?logo=go&style=flat">
 
 A simple Go app to list projects and open them in a new window of VS Code.

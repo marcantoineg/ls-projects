@@ -1,6 +1,6 @@
 package projectform
 
-import "list-my-projects/models/project"
+import "ls-projects/models/project"
 
 type NoProjectCreatedMsg struct{}
 type ProjectCreatedMsg struct {

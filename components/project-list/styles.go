@@ -1,7 +1,7 @@
 package projectlist
 
 import (
-	"list-my-projects/components/styles"
+	"ls-projects/components/styles"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"

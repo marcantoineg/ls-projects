@@ -1,7 +1,7 @@
 package projectlist
 
 import (
-	"list-my-projects/models/project"
+	"ls-projects/models/project"
 
 	"github.com/charmbracelet/bubbles/list"
 )

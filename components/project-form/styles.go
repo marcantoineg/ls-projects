@@ -2,7 +2,7 @@ package projectform
 
 import (
 	"fmt"
-	"list-my-projects/components/styles"
+	"ls-projects/components/styles"
 
 	"github.com/charmbracelet/lipgloss"
 )
