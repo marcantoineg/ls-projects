@@ -3,7 +3,8 @@ package config
 import (
 	"flag"
 	"fmt"
-	"ls-projects/fileutil"
+
+	"github.com/marcantoineg/fileutil"
 )
 
 func init() {

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	projectform "ls-projects/components/project-form"
 	searchinput "ls-projects/components/search-input"
-	"ls-projects/fileutil"
 	"ls-projects/models/project"
 	"os/exec"
 
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/marcantoineg/fileutil"
 )
 
 var keybinds = _keybinds{}

@@ -4,8 +4,10 @@ package project
 import (
 	"errors"
 	"fmt"
-	"ls-projects/fileutil"
+
 	"ls-projects/models/config"
+
+	"github.com/marcantoineg/fileutil"
 )
 
 // A Project stores simple information about a project on disk.
