@@ -1,10 +1,10 @@
 // Package config implements functions required to create, load and edit a config.
 package config
 
-import "list-my-projects/fileutil"
+import "ls-projects/fileutil"
 
 const (
-	appDataPath          = "~/.config/list-my-projects"
+	appDataPath          = "~/.config/ls-projects"
 	projectsFileName     = ".projects.json"
 	configFileName       = ".config.json"
 	testProjectsFilePath = "./tests/default.test.projects.json"

@@ -1,4 +1,4 @@
-module list-my-projects
+module ls-projects
 
 go 1.18
 

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	projectlist "list-my-projects/components/project-list"
+	projectlist "ls-projects/components/project-list"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"

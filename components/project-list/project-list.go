@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	projectform "list-my-projects/components/project-form"
-	searchinput "list-my-projects/components/search-input"
-	"list-my-projects/models/project"
+	projectform "ls-projects/components/project-form"
+	searchinput "ls-projects/components/search-input"
+	"ls-projects/models/project"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"

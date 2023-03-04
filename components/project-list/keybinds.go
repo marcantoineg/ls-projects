@@ -2,10 +2,10 @@ package projectlist
 
 import (
 	"fmt"
-	projectform "list-my-projects/components/project-form"
-	searchinput "list-my-projects/components/search-input"
-	"list-my-projects/fileutil"
-	"list-my-projects/models/project"
+	projectform "ls-projects/components/project-form"
+	searchinput "ls-projects/components/search-input"
+	"ls-projects/fileutil"
+	"ls-projects/models/project"
 	"os/exec"
 
 	"github.com/atotto/clipboard"

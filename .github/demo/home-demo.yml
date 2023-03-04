@@ -9,7 +9,7 @@ config:
 
   # Specify the current working directory path
   # the default is the current working directory path
-  cwd: /Users/marc-antoinegiguere/dev/go/list-my-projects
+  cwd: /Users/marc-antoinegiguere/dev/go/ls-projects
 
   # Export additional ENV variables
   env:
@@ -50,7 +50,7 @@ config:
   # Don't forget to add a backgroundColor style with a null as type
   frameBox:
     type: floating
-    title: "github.com/marcantoineg/list-my-projects"
+    title: "github.com/marcantoineg/ls-projects"
     style:
       border: 1px solid black
       boxShadow: "0px 0px 0px 20px #404E5C"

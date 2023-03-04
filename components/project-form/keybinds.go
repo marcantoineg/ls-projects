@@ -2,7 +2,7 @@ package projectform
 
 import (
 	"errors"
-	"list-my-projects/models/project"
+	"ls-projects/models/project"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
