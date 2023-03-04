@@ -1,7 +1,7 @@
 // Package config implements functions required to create, load and edit a config.
 package config
 
-import "ls-projects/fileutil"
+import "github.com/marcantoineg/fileutil"
 
 const (
 	appDataPath          = "~/.config/ls-projects"
