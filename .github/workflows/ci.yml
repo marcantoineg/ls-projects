@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  build-and-test:
     runs-on: ubuntu-20.04
 
     steps:
@@ -22,9 +22,12 @@ jobs:
 
       - name: Install go mods
         run: go mod download
+        
+      - name: go build
+        run: go build -v
 
-      - name: Run go vet
+      - name: go vet
         run: go vet ./...
 
-      - name: Run go tests
+      - name: go tests
         run: go test ./... -v
