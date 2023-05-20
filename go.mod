@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/marcantoineg/fileutil v0.0.0-20230304185054-f89906007253
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 )
 
 require (
