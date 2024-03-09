@@ -60,8 +60,7 @@ func readOnDiskConfig(configPath string) *Config {
 		fmt.Printf("error loading config file '%s'\n\n%s", configPath, err.Error())
 		panic(err)
 	} else if config.ConfigPath == "" || config.ProjectsPath == "" {
-		fmt.Println(fmt.Sprintf("config file '%s' must specify 'configPath' and 'projectsPath'", configPath))
-		panic(err)
+		fmt.Printf("config file '%s' must specify 'configPath' and 'projectsPath'\n", configPath)
 	}
 
 	return &config

@@ -1,7 +1,6 @@
 package project
 
 import (
-	"io/ioutil"
 	"ls-projects/models/config"
 
 	"os"
@@ -709,9 +708,5 @@ func Test_SwapIndex(t *testing.T) {
 }
 
 func saveStringToFile(data string) error {
-	return ioutil.WriteFile(getProjectsFilePath(), []byte(data), os.ModePerm)
-}
-
-func getTestProjectsFilePath() string {
-	return config.GetInstance().ProjectsPath
+	return os.WriteFile(getProjectsFilePath(), []byte(data), os.ModePerm)
 }

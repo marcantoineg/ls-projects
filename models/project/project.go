@@ -46,12 +46,12 @@ func GetAll() ([]Project, error) {
 	for i := range projects {
 		var project = projects[i]
 		if project.Name == "" || project.Path == "" {
-			return nil, errors.New("both Name and Path fields are required.")
+			return nil, errors.New("both Name and Path fields are required")
 		}
 
 		exists := fileutil.Exists(projects[i].Path)
 		if !exists {
-			return nil, errors.New(fmt.Sprintf("directory/file %s does not exists", projects[i].Path))
+			return nil, fmt.Errorf("directory/file %s does not exists", projects[i].Path)
 		}
 	}
 	return projects, err
@@ -159,7 +159,7 @@ func SwapIndex(initialIndex int, targetIndex int) ([]Project, error) {
 
 	err = fileutil.SaveToFile(projects, getProjectsFilePath())
 
-	return projects, nil
+	return projects, err
 }
 
 // getProjectsFilePath fetches the projects file path from the app's config.

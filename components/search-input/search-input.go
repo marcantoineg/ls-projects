@@ -14,7 +14,7 @@ type Model struct {
 func NewSearchInput(items []string) Model {
 	t := textinput.New()
 	t.Placeholder = "Search..."
-	t.CursorStyle = Style.InputCursorStyle
+	t.Cursor.Style = Style.InputCursorStyle
 
 	return Model{
 		input:           t,
