@@ -2,7 +2,6 @@ package config
 
 import (
 	"flag"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -174,5 +173,5 @@ func Test_initConfig(t *testing.T) {
 }
 
 func saveStringToFile(filePath, data string) error {
-	return ioutil.WriteFile(filePath, []byte(data), os.ModePerm)
+	return os.WriteFile(filePath, []byte(data), os.ModePerm)
 }
