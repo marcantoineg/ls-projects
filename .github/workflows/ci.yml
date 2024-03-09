@@ -18,9 +18,9 @@ jobs:
       - name: Setup Go environment
         uses: actions/setup-go@v5
         with:
-          go-version: 1.18
+          go-version: 1.22
 
-      - name: Install go mods
+      - name: go mod dowload
         run: go mod download
         
       - name: go build
@@ -29,5 +29,5 @@ jobs:
       - name: go vet
         run: go vet ./...
 
-      - name: go tests
+      - name: go test
         run: go test ./... -v
