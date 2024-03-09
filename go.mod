@@ -1,6 +1,6 @@
 module ls-projects
 
-go 1.18
+go 1.22.1
 
 require (
 	github.com/marcantoineg/fileutil v0.0.0-20230304185054-f89906007253
