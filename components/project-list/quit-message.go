@@ -2,12 +2,9 @@ package projectlist
 
 import (
 	"math/rand"
-	"time"
 )
 
 func quitMessage() string {
-	rand.Seed(time.Now().UnixNano())
-
 	messages := types[rand.Intn(len(types))]
 	return messages[rand.Intn(len(messages))]
 }

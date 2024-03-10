@@ -17,13 +17,13 @@ var keybinds = _keybinds{}
 
 type _keybinds struct{}
 
-func (_ _keybinds) defineShort() []key.Binding {
+func (_keybinds) defineShort() []key.Binding {
 	return []key.Binding{
 		key.NewBinding(key.WithKeys("enter", "space"), key.WithHelp("⏎/space", "open a project")),
 	}
 }
 
-func (_ _keybinds) defineLong() []key.Binding {
+func (_keybinds) defineLong() []key.Binding {
 	return []key.Binding{
 		key.NewBinding(key.WithKeys("a"), key.WithHelp("a", "add a project")),
 		key.NewBinding(key.WithKeys("e"), key.WithHelp("e", "edit selected project")),
@@ -35,7 +35,7 @@ func (_ _keybinds) defineLong() []key.Binding {
 }
 
 // handleKeyMsg handles the keybinding part of the Update function.
-func (_ _keybinds) handle(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (_keybinds) handle(m *Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch keypress := msg.String(); keypress {
 	case "ctrl+c", "q", "esc":
 		if m.movingModeActive {

@@ -10,7 +10,7 @@ import (
 
 func main() {
 	p := tea.NewProgram(projectlist.NewProjectList())
-	if err := p.Start(); err != nil {
+	if _, err := p.Run(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

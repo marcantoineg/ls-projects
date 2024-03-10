@@ -41,7 +41,7 @@ func NewProjectForm(l tea.Model, project *project.Project) Model {
 	var t textinput.Model
 	for i := range m.inputs {
 		t = textinput.New()
-		t.CursorStyle = focusedStyle(m)
+		t.Cursor.Style = focusedStyle(m)
 		t.CharLimit = 0
 
 		switch i {
