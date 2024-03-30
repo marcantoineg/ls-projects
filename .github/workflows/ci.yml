@@ -32,7 +32,7 @@ jobs:
       - name: go test
         run: go test ./... -v
 
-      - uses: dominikh/staticcheck-action@v1.3.0
+      - uses: dominikh/staticcheck-action@v1.3.1
         with:
           version: "latest"
           install-go: false
