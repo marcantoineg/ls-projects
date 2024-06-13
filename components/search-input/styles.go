@@ -15,5 +15,5 @@ type SearchInputStyles struct {
 var Style = SearchInputStyles{
 	ContainerStyle:        lipgloss.NewStyle().Padding(0, 1).MarginLeft(4).Border(lipgloss.NormalBorder()),
 	FocusedContainerStyle: lipgloss.NewStyle().Padding(0, 1).MarginLeft(4).Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#6C91BF")),
-	InputCursorStyle:      projectform.Style.NewFocusedStyle.Copy(),
+	InputCursorStyle:      projectform.Style.NewFocusedStyle,
 }
