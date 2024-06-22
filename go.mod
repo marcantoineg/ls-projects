@@ -23,7 +23,7 @@ require (
 require (
 	github.com/atotto/clipboard v0.1.4
 	github.com/charmbracelet/bubbles v0.18.0
-	github.com/charmbracelet/bubbletea v0.26.4
+	github.com/charmbracelet/bubbletea v0.26.5
 	github.com/charmbracelet/lipgloss v0.11.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
@@ -36,6 +36,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sahilm/fuzzy v0.1.1
-	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
