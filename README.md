@@ -10,12 +10,12 @@ This app uses [Bubble Tea](https://github.com/charmbracelet/bubbletea/) as its U
 
 <img src=".github/demo/home-demo.gif" width="100%" align="center" />
 
-<p align="right"><em><sub>without a meme, is it really a nice repo?</sub></em></p>
-<img src="https://user-images.githubusercontent.com/16008095/208336763-22bec39c-6a44-4469-96bc-675b0f2e85de.png" align="right" width="37%" />
-
 ## Configuration
 
 The CLI will read the file at `~/.config/ls-projects/.project.json`, don't forget to copy your config file if you edited the one provided in this project.
 
 ## Usage
 You can either use it with `go run main.go` or by exporting it as a binary in your PATH using `go build -o <binary_path/binary_name>`.
+
+## Motivation
+<img src="https://user-images.githubusercontent.com/16008095/208336763-22bec39c-6a44-4469-96bc-675b0f2e85de.png" />
