@@ -45,6 +45,5 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		}
 	}
 
-	//lint:ignore SA1006 expected behavior
-	fmt.Fprintf(w, fn(str))
+	fmt.Fprint(w, fn(str))
 }
